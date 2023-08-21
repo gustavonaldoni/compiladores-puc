@@ -1,13 +1,16 @@
 #include <stdio.h>
-#include "analex.h"
+#include "anasint.h"
 
 int main()
 {
-    int token;
     token = analex();
 
-    while (token != 'q')
-        token = analex();
+    E();
+
+    if (token != ';')
+        erro();
+    else
+        printf("Sucesso!");
 
     return 0;
 }

@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "anasint.h": "c",
+        "stdio.h": "c"
+    },
+    "cmake.configureOnOpen": false
+}

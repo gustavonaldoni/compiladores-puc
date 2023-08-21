@@ -1,25 +1,29 @@
 #include <stdio.h>
-#include <ctype.h>
+#include <stdlib.h>
 #include "analex.h"
 
-void erro();
-void reconhece(int token);
+int token;
 
 void E();
-void E_linha();
 void T();
+void E_linha();
 void T_linha();
-int F();
+void F();
+void erro();
+void reconhecer(int tok);
 
 void erro()
 {
-    int ch = analex();
-
+    printf("Erro sintatico na linha: %d\n", linha);
+    exit(1);
 }
 
-void reconhece(int token)
+void reconhecer(int tok)
 {
-
+    if (tok == token)
+        token = analex();
+    else
+        erro();
 }
 
 void E()
@@ -30,22 +34,20 @@ void E()
 
 void E_linha()
 {
-    if (tokenval == '+')
+    if(token == '+')
     {
-        reconhece('+');
+        reconhecer('+');
         T();
         E_linha();
-    }
 
-    else if (tokenval == '-')
+    }
+    else if (token == '-')
     {
-        reconhece('-');
+        reconhecer('-');
         T();
         E_linha();
-    }
 
-    else
-        ;
+    }
 }
 
 void T()
@@ -56,31 +58,32 @@ void T()
 
 void T_linha()
 {
-    if (tokenval == '*')
+    if(token == '*')
     {
-        reconhece('*');
+        reconhecer('*');
         F();
         T_linha();
-    }
 
-    else if (tokenval == '/')
+    }
+    else if(token == '/')
     {
-        reconhece('/');
+        reconhecer('/');
         F();
         T_linha();
-    }
 
-    else
-        ;
+    }
 }
 
-int F()
+void F()
 {
-    if (tokenval == NUM)
-        return NUM;
-
-    else if (tokenval == '(')
+    if(token == NUM)
+    {
+        reconhecer(NUM);
+    }
+    else if (token == '(')
+    {
+        reconhecer('(');
         E();
-    else if (tokenval == ')')
-        return;
+        reconhecer(')');
+    }
 }
