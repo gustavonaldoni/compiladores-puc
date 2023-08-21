@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "analex.h"
+#include "pilha.h"
 
 int token;
+pilha p;
 
 void E();
 void T();
@@ -38,12 +40,14 @@ void E_linha()
     {
         reconhecer('+');
         T();
+        p_insere(&p, '+');
         E_linha();
     }
     else if (token == '-')
     {
         reconhecer('-');
         T();
+        p_insere(&p, '-');
         E_linha();
     }
 }
@@ -60,12 +64,14 @@ void T_linha()
     {
         reconhecer('*');
         F();
+        p_insere(&p, '*');
         T_linha();
     }
     else if(token == '/')
     {
         reconhecer('/');
         F();
+        p_insere(&p, '/');
         T_linha();
     }
 }
@@ -73,26 +79,15 @@ void T_linha()
 void F()
 {
     if(token == NUM)
-        reconhecer(token);
-
+    {
+        reconhecer(NUM);
+        p_insere(&p, NUM);
+    }
+        
     else if (token == '(')
     {
         reconhecer('(');
         E();
         reconhecer(')');
     }
-}
-
-int main()
-{
-    token = analex();
-
-    E();
-
-    if (token != ';')
-        erro();
-    else
-        printf("Sucesso!");
-
-    return 0;
 }
