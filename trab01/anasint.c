@@ -39,14 +39,12 @@ void E_linha()
         reconhecer('+');
         T();
         E_linha();
-
     }
     else if (token == '-')
     {
         reconhecer('-');
         T();
         E_linha();
-
     }
 }
 
@@ -63,27 +61,38 @@ void T_linha()
         reconhecer('*');
         F();
         T_linha();
-
     }
     else if(token == '/')
     {
         reconhecer('/');
         F();
         T_linha();
-
     }
 }
 
 void F()
 {
     if(token == NUM)
-    {
-        reconhecer(NUM);
-    }
+        reconhecer(token);
+
     else if (token == '(')
     {
         reconhecer('(');
         E();
         reconhecer(')');
     }
+}
+
+int main()
+{
+    token = analex();
+
+    E();
+
+    if (token != ';')
+        erro();
+    else
+        printf("Sucesso!");
+
+    return 0;
 }

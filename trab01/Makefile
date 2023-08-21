@@ -1,4 +1,4 @@
-SOURCE_FILE = main.c
+SOURCE_FILE = anasint.c
 EXECUTABLE_NAME = main.out
 TEST_FILE = test.txt
 
