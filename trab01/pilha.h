@@ -55,6 +55,8 @@ int p_insere(pilha *p, int dado)
     aux->prox = p->topo;
     p->topo = aux;
 
+    p_mostrar(*p);
+
     return 1;
 }
 
@@ -62,6 +64,8 @@ void p_mostrar(pilha p)
 {
     struct no *aux;
     aux = p.topo;
+
+    printf("\n");
 
     if (p_estaVazia(p))
         printf("pilha vazia ...\n");
@@ -74,6 +78,8 @@ void p_mostrar(pilha p)
             aux = aux->prox;
         }
     }
+
+    printf("\n");
 }
 
 int p_tamanho(pilha p)
@@ -113,6 +119,7 @@ size_t p_tamanhoBytes(pilha p)
 
 int p_remove(pilha *p)
 {
+    int temp;
     struct no *aux;
 
     if (p_estaVazia(*p))
@@ -121,12 +128,16 @@ int p_remove(pilha *p)
     aux = p->topo;
     p->topo = aux->prox;
 
+    temp = aux->dado;
+
     aux->dado = 0;
     aux->prox = NULL;
 
     free(aux);
 
-    return aux->dado;
+    p_mostrar(*p);
+
+    return temp;
 }
 
 int p_topo(pilha p)

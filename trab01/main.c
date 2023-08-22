@@ -11,7 +11,7 @@ int main()
     if (token != ';')
         erro();
     else
-        p_mostrar(p);
+        printf("Resultado = %d\n", p_topo(p));
 
     return 0;
 }

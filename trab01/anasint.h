@@ -6,6 +6,9 @@
 int token;
 pilha p;
 
+int a = 0;
+int b = 0;
+
 void E();
 void T();
 void E_linha();
@@ -40,14 +43,28 @@ void E_linha()
     {
         reconhecer('+');
         T();
-        p_insere(&p, '+');
+
+        // Análise semântica
+        a = p_remove(&p);
+        b = p_remove(&p);
+
+        if (a != -1 && b != -1)
+            p_insere(&p, a + b);
+
         E_linha();
     }
     else if (token == '-')
     {
         reconhecer('-');
         T();
-        p_insere(&p, '-');
+
+        // Análise semântica
+        a = p_remove(&p);
+        b = p_remove(&p);
+
+        if (a != -1 && b != -1)
+            p_insere(&p, b - a);
+
         E_linha();
     }
 }
@@ -64,14 +81,30 @@ void T_linha()
     {
         reconhecer('*');
         F();
-        p_insere(&p, '*');
+
+        p_mostrar(p);
+
+        // Análise semântica
+        a = p_remove(&p);
+        b = p_remove(&p);
+
+        if (a != -1 && b != -1)
+            p_insere(&p, a * b);
+
         T_linha();
     }
     else if(token == '/')
     {
         reconhecer('/');
         F();
-        p_insere(&p, '/');
+
+        // Análise semântica
+        a = p_remove(&p);
+        b = p_remove(&p);
+
+        if (a != -1 && b != -1)
+            p_insere(&p, b / a);
+    
         T_linha();
     }
 }
@@ -80,8 +113,9 @@ void F()
 {
     if(token == NUM)
     {
+        // printf("tokenval = %d\n", tokenval);
+        p_insere(&p, tokenval);
         reconhecer(NUM);
-        p_insere(&p, NUM);
     }
         
     else if (token == '(')
