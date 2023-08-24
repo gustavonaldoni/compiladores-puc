@@ -55,7 +55,7 @@ int p_insere(pilha *p, int dado)
     aux->prox = p->topo;
     p->topo = aux;
 
-    p_mostrar(*p);
+    // p_mostrar(*p);
 
     return 1;
 }
@@ -135,7 +135,7 @@ int p_remove(pilha *p)
 
     free(aux);
 
-    p_mostrar(*p);
+    // p_mostrar(*p);
 
     return temp;
 }

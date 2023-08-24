@@ -46,8 +46,8 @@ int analex()
     if (ch == ';')
         return ';';
 
-    if (ch == 'q')
-        return 'q';
+    if (ch == EOF)
+        return EOF;
 
     if (isdigit(ch))
     {

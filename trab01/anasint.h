@@ -9,13 +9,14 @@ pilha p;
 int a = 0;
 int b = 0;
 
+void erro();
+void reconhecer(int tok);
+
 void E();
 void T();
 void E_linha();
 void T_linha();
 void F();
-void erro();
-void reconhecer(int tok);
 
 void erro()
 {
@@ -44,12 +45,13 @@ void E_linha()
         reconhecer('+');
         T();
 
+        printf("+ ");
+
         // Análise semântica
         a = p_remove(&p);
         b = p_remove(&p);
 
-        if (a != -1 && b != -1)
-            p_insere(&p, a + b);
+        p_insere(&p, a + b);
 
         E_linha();
     }
@@ -58,12 +60,13 @@ void E_linha()
         reconhecer('-');
         T();
 
+        printf("- ");
+
         // Análise semântica
         a = p_remove(&p);
         b = p_remove(&p);
 
-        if (a != -1 && b != -1)
-            p_insere(&p, b - a);
+        p_insere(&p, b - a);
 
         E_linha();
     }
@@ -82,14 +85,13 @@ void T_linha()
         reconhecer('*');
         F();
 
-        p_mostrar(p);
+        printf("* ");
 
         // Análise semântica
         a = p_remove(&p);
         b = p_remove(&p);
 
-        if (a != -1 && b != -1)
-            p_insere(&p, a * b);
+        p_insere(&p, a * b);
 
         T_linha();
     }
@@ -98,12 +100,13 @@ void T_linha()
         reconhecer('/');
         F();
 
+        printf("/ ");
+
         // Análise semântica
         a = p_remove(&p);
         b = p_remove(&p);
 
-        if (a != -1 && b != -1)
-            p_insere(&p, b / a);
+        p_insere(&p, b / a);
     
         T_linha();
     }
@@ -113,7 +116,8 @@ void F()
 {
     if(token == NUM)
     {
-        // printf("tokenval = %d\n", tokenval);
+        printf("%d ", tokenval);
+
         p_insere(&p, tokenval);
         reconhecer(NUM);
     }
@@ -124,4 +128,7 @@ void F()
         E();
         reconhecer(')');
     }
+
+    else
+        erro();
 }
