@@ -1,16 +1,37 @@
-#define IF 257
-#define ELSE 258
-#define WHILE 259
-#define DO 260
-#define INT 262
-#define GE 264
-#define LE 265
-#define NE 266
-#define EQ 267
-#define NUM 268
-#define ID 269
-
-
-
-
-
+#define AUTO 257
+#define DOUBLE 258
+#define INT 259
+#define STRUCT 260
+#define BREAK 261
+#define ELSE 262
+#define LONG 263
+#define SWITCH 264
+#define CASE 265
+#define ENUM 266
+#define REGISTER 267
+#define TYPEDEF 268
+#define CHAR 269
+#define EXTERN 270
+#define RETURN 271
+#define UNION 272
+#define CONST 273
+#define FLOAT 274
+#define SHORT 275
+#define UNSIGNED 276
+#define CONTINUE 277
+#define FOR 278
+#define SIGNED 279
+#define VOID 280
+#define DEFAULT 281
+#define SIZEOF 282
+#define VOLATILE 283
+#define DO 284
+#define IF 285
+#define STATIC 286
+#define WHILE 287
+#define GE 288
+#define LE 289
+#define EQ 290
+#define NE 291
+#define NUM 292
+#define ID 293

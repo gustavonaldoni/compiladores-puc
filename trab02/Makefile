@@ -7,7 +7,7 @@ CC = gcc
 CFLAGS = -lfl
 
 all:
-	flex analex.l 
+	flex -o analex.c analex.l
 	$(CC) $(SOURCE_FILE) -o $(EXECUTABLE_NAME) $(CFLAGS)
 
 execute:
