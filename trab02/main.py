@@ -4,8 +4,7 @@ def formatar_tokens() -> list:
                     "typedef", "char", "extern", "return", "union", "const",
                     "float", "short", "unsigned", "continue", "for", "signed",
                     "void", "default", "sizeof", "volatile", "do", "if", "static",
-                    "while", 'ge', 'le', 'eq', 'ne',
-                    'num', 'id')
+                    "while", 'ge', 'le', 'eq', 'ne')
 
     tokens_depois = []
 
@@ -27,9 +26,18 @@ def gerar_arquivo_tokens(tokens: list):
 
 def formatar_tokens_analex(tokens: list):
     resultado = ''
+    tokens_excecoes = {'GE': '>=',
+                       'LE': '<=',
+                       'EQ': '==',
+                       'NE': '!='}
 
     for token in tokens:
-        resultado += f'"{token.lower()}" {{ return {token}; }} \n'
+        if token in tokens_excecoes.keys():
+            valor = tokens_excecoes.get(token)
+        else:
+            valor = token.lower()
+
+        resultado += f'"{valor}" {{ return {token}; }} \n'
 
     return resultado
 

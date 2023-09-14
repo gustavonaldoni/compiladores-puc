@@ -40,12 +40,10 @@ int yyerror(char *s) {
 "if" { return IF; } 
 "static" { return STATIC; } 
 "while" { return WHILE; } 
-"ge" { return GE; } 
-"le" { return LE; } 
-"eq" { return EQ; } 
-"ne" { return NE; } 
-"num" { return NUM; } 
-"id" { return ID; }
+">=" { return GE; } 
+"<=" { return LE; } 
+"==" { return EQ; } 
+"!=" { return NE; }
 ">"   { return '>';}
 "<"   { return '<';}
 "="   { return '='; }
@@ -60,7 +58,7 @@ int yyerror(char *s) {
 "}"   { return '}'; }
 ","   { return ','; }
 [0-9]+("."[0-9]+)?   { return NUM; }
-[a-zA-Z][a-zA-Z0-9]*   { return ID; }
+[a-zA-Z][a-zA-Z0-9]*   { insere(yytext); return ID; }
 \        { ; }
 \n       { line++; }     
 \t       { ; }
@@ -79,6 +77,7 @@ int token;
 		printf("%d -> %s\n", token, yytext);
 		token = yylex(); 
 	}
+	imprime();
 }
 
 
