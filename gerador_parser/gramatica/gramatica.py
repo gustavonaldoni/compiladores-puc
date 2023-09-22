@@ -1,6 +1,3 @@
-import re
-import os
-
 STRING_VAZIA = 'ε'
 
 
@@ -22,7 +19,14 @@ class Gramatica:
         print(f'T = {self.terminais}')
 
     def mostrar_producoes(self):
-        print(self.producoes)
+        for lado_esquerdo, producao in self.producoes.items():
+            resultado_producao = f'{lado_esquerdo} -> '
+
+            for derivacao in producao:
+                resultado_producao += f'{derivacao} | '
+            
+            resultado_producao = resultado_producao[:-3]
+            print(resultado_producao)
 
     def mostrar_simbolo_inicial(self):
         print(f'S = {self.simbolo_inicial}')
@@ -53,24 +57,24 @@ class Gramatica:
 
     def _nullables_atuais(self) -> list[str]:
         return [nao_terminal for nao_terminal in self._nullables.keys() if self._nullables[nao_terminal] == True]
-    
+
     def _simbolo_e_nullable(self, simbolo: str) -> bool:
         if (simbolo not in self.terminais) and (simbolo not in self.nao_terminais):
             raise KeyError(f'Simbolo {simbolo} nao definido na gramatica')
-        
+
         if simbolo in self.terminais:
             return False
-        
+
         if simbolo in self.nao_terminais:
             nullables_atuais = self._nullables_atuais()
 
             return simbolo in nullables_atuais
-        
+
         return False
 
     def calcular_nullables(self) -> dict:
         # Referência: https://mkaul.wordpress.com/2009/12/11/computing-nullable-first-and-follow-sets/
-        
+
         self._definir_nullables_como_falso()
 
         # Casos triviais onde X -> STRING_VAZIA
@@ -98,10 +102,11 @@ class Gramatica:
                     resultado_derivacao = True
 
                     for simbolo in derivacao:
-                        resultado_derivacao = resultado_derivacao and self._simbolo_e_nullable(simbolo)
+                        resultado_derivacao = resultado_derivacao and self._simbolo_e_nullable(
+                            simbolo)
 
                     resultado_nao_terminal = resultado_nao_terminal or resultado_derivacao
-            
+
                 self._definir_nullable(nao_terminal, resultado_nao_terminal)
 
         return self._nullables
