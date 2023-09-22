@@ -1,4 +1,5 @@
 import re
+import os
 
 STRING_VAZIA = 'ε'
 
@@ -10,7 +11,9 @@ class Gramatica:
         self.producoes = producoes
         self.simbolo_inicial = simbolo_inicial
 
-        self._log_nullable = './log_nullable.txt'
+        self._nullables = dict()
+        self._firsts = dict()
+        self._follows = dict()
 
     def mostrar_nao_terminais(self):
         print(f'N = {self.nao_terminais}')
@@ -32,53 +35,73 @@ class Gramatica:
         self.mostrar_simbolo_inicial()
         print()
 
-    def _nullable_escrever(self, simbolo: str, arquivo):
-        arquivo.write(f'{simbolo}: ')
+    def producao(self, nao_terminal: str):
+        if nao_terminal not in self.nao_terminais:
+            raise KeyError(f'{nao_terminal} nao eh simbolo nao terminal.')
 
+        return self.producoes.get(nao_terminal)
+
+    def _definir_nullables_como_falso(self):
+        for nao_terminal in self.nao_terminais:
+            self._nullables.update({nao_terminal: False})
+
+    def _definir_nullable(self, nao_terminal: str, valor: bool):
+        if nao_terminal not in self.nao_terminais:
+            raise KeyError(f'{nao_terminal} nao eh simbolo nao terminal.')
+
+        self._nullables[nao_terminal] = valor
+
+    def _nullables_atuais(self) -> list[str]:
+        return [nao_terminal for nao_terminal in self._nullables.keys() if self._nullables[nao_terminal] == True]
+    
+    def _simbolo_e_nullable(self, simbolo: str) -> bool:
+        if (simbolo not in self.terminais) and (simbolo not in self.nao_terminais):
+            raise KeyError(f'Simbolo {simbolo} nao definido na gramatica')
+        
         if simbolo in self.terminais:
-            arquivo.write('0 ')
             return False
-
-        if STRING_VAZIA in self.producoes[simbolo]:
-            arquivo.write('1 ')
-            return True
-
-        for derivacao in self.producoes[simbolo]:
-            arquivo.write('\n')
-            for s in derivacao:
-                self._nullable_escrever(s, arquivo)
-
-            arquivo.write('\n')
-
-    def nullable(self, simbolo: str) -> bool:
-        with open(self._log_nullable, mode='a+') as arquivo:
-            self._nullable_escrever(simbolo, arquivo)
-
-        arquivo = open(self._log_nullable, mode='r')
-
-        conteudo = arquivo.read()
-        conteudo = re.sub(r'[\n]{2,}', '\n\n', conteudo)
-
-        indice_primeira_quebra = conteudo.find('\n')
-        conteudo = conteudo[indice_primeira_quebra + 1:]
-
-        arquivo.close()
-
-        with open(self._log_nullable, mode='w') as arquivo:
-            arquivo.write(conteudo)
-
-        partes = conteudo.split('\n\n')
-        print(partes)
         
-        for i, parte in enumerate(partes):
-            if '0' in parte:
-                partes[i] = False
-            else:
-                partes[i] = True
-        
-        print(partes)
+        if simbolo in self.nao_terminais:
+            nullables_atuais = self._nullables_atuais()
 
-        if True in partes:
-            return True
+            return simbolo in nullables_atuais
         
         return False
+
+    def calcular_nullables(self) -> dict:
+        # Referência: https://mkaul.wordpress.com/2009/12/11/computing-nullable-first-and-follow-sets/
+        
+        self._definir_nullables_como_falso()
+
+        # Casos triviais onde X -> STRING_VAZIA
+        nullables_triviais = []
+
+        for nao_terminal in self.nao_terminais:
+            producao = self.producao(nao_terminal)
+
+            if STRING_VAZIA in producao:
+                self._definir_nullable(nao_terminal, True)
+                nullables_triviais.append(nao_terminal)
+
+        # Casos onde X -> A e A -> STRING_VAZIA
+        for nullable_trivial in nullables_triviais:
+            for nao_terminal, producao in self.producoes.items():
+                if nullable_trivial in producao:
+                    self._definir_nullable(nao_terminal, True)
+
+        # Casos onde X -> ABCDE...
+        for nao_terminal, producao in self.producoes.items():
+            if nao_terminal not in self._nullables_atuais():
+                resultado_nao_terminal = False
+
+                for derivacao in producao:
+                    resultado_derivacao = True
+
+                    for simbolo in derivacao:
+                        resultado_derivacao = resultado_derivacao and self._simbolo_e_nullable(simbolo)
+
+                    resultado_nao_terminal = resultado_nao_terminal or resultado_derivacao
+            
+                self._definir_nullable(nao_terminal, resultado_nao_terminal)
+
+        return self._nullables
