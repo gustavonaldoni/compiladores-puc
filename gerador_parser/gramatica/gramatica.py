@@ -50,9 +50,6 @@ class Gramatica:
 
         for nao_terminal in self.nao_terminais:
             self._nullables.update({nao_terminal: False})
-        
-        for terminal in self.terminais:
-            self._nullables.update({terminal: False})
 
     def _definir_nullable(self, nao_terminal: str, valor: bool):
         if nao_terminal not in self.nao_terminais:
@@ -121,34 +118,42 @@ class Gramatica:
         for nao_terminal in self.nao_terminais:
             self._firsts.update({nao_terminal: set()})
 
-        for terminal in self.terminais:
-            self._firsts.update({terminal: set({terminal,})})
-
     def calcular_firsts(self) -> set:
-        self._definir_firsts()
         nullables = self.calcular_nullables()
 
-        # Caso 2: Se X é não terminal e nullable(X) = True
-        for first in self._firsts:
-            if nullables[first]:
-                self._firsts[first].add(STRING_VAZIA)
+        self._definir_firsts()
 
+        # Caso trivial onde X -> aβ, em que a é terminal ou vazio
+        # e β representa qualquer combinação contendo terminais ou nao terminais.
         for nao_terminal, producao in self.producoes.items():
             for derivacao in producao:
-                m = len(derivacao)
+                primeiro_simbolo = derivacao[0]
 
-                for i in range(m):
-                    simbolo = derivacao[i]
-                    resultado_derivacao = True
+                if primeiro_simbolo in self.terminais or primeiro_simbolo == STRING_VAZIA:
+                    self._firsts[nao_terminal].add(primeiro_simbolo)
 
-                    if simbolo == STRING_VAZIA:
-                        continue
+        # Caso onde X -> Aβ, onde A é não terminal e β representa qualquer combinação
+        # contendo terminais ou nao terminais.
+        for nao_terminal, producao in self.producoes.items():
+            for derivacao in producao:
+                primeiro_simbolo = derivacao[0]
 
-                    for k in range(i+1):
-                        resultado_derivacao = resultado_derivacao and nullables[derivacao[k]]
+                if primeiro_simbolo in self.nao_terminais:
+                    print()
+                    print('nao_terminal = ', nao_terminal)
+                    print('derivacao = ', derivacao)
+                    print(f'primeiro_simbolo = {primeiro_simbolo} : nullable = {nullables[primeiro_simbolo]}')
+                    
+                    if not nullables[primeiro_simbolo]:
+                        self._firsts[nao_terminal] = self._firsts[nao_terminal].union(self._firsts[primeiro_simbolo])
+                    else:
+                        pass
 
-                    if i == 0 or resultado_derivacao:
-                        self._firsts[nao_terminal] = self._firsts[nao_terminal].union(self._firsts[simbolo])
+                    print(f'First({primeiro_simbolo}) = {self._firsts[primeiro_simbolo]}')
+                    print(f'First({nao_terminal}) = {self._firsts[nao_terminal]}')
+                    print()
 
         return self._firsts
+        
+
 
