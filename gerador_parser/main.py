@@ -40,6 +40,17 @@ if __name__ == '__main__':
                            terminais=set({'u', 'v', 'w', 'x', 'y', 'z'}),
                            producoes=producoes4,
                            simbolo_inicial='S')
+    
+    num = ('N', 'num')
+
+    producoes5 = {'S': ['E'],
+                  'E': ['T+E', 'T'],
+                  'T': [f'{num[0]}*T', num[0]]}
+
+    gramatica5 = Gramatica(nao_terminais=set({'S', 'E', 'T'}),
+                           terminais=set({num[0], '+', '*'}),
+                           producoes=producoes5,
+                           simbolo_inicial='S')
 
     gramatica1.mostrar()
     print(gramatica1.calcular_nullables())
@@ -52,3 +63,6 @@ if __name__ == '__main__':
 
     gramatica4.mostrar()
     print(gramatica4.calcular_nullables())
+
+    gramatica5.mostrar()
+    print(gramatica5.calcular_nullables())

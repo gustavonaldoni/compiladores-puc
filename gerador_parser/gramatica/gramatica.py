@@ -46,6 +46,8 @@ class Gramatica:
         return self.producoes.get(nao_terminal)
 
     def _definir_nullables_como_falso(self):
+        self._nullables = dict()
+
         for nao_terminal in self.nao_terminais:
             self._nullables.update({nao_terminal: False})
 
@@ -74,7 +76,6 @@ class Gramatica:
 
     def calcular_nullables(self) -> dict:
         # Referência: https://mkaul.wordpress.com/2009/12/11/computing-nullable-first-and-follow-sets/
-
         self._definir_nullables_como_falso()
 
         # Casos triviais onde X -> STRING_VAZIA
