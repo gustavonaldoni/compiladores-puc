@@ -53,8 +53,10 @@ if __name__ == '__main__':
                            simbolo_inicial='S')
 
     gramatica1.mostrar()
-    print(gramatica1.calcular_nullables())
+    print('Nullables = ', gramatica1.calcular_nullables())
+    print('Firsts = ', gramatica1.calcular_firsts())
 
+    """
     gramatica2.mostrar()
     print(gramatica2.calcular_nullables())
 
@@ -66,3 +68,4 @@ if __name__ == '__main__':
 
     gramatica5.mostrar()
     print(gramatica5.calcular_nullables())
+    """

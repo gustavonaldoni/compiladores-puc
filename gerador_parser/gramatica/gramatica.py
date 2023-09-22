@@ -50,6 +50,9 @@ class Gramatica:
 
         for nao_terminal in self.nao_terminais:
             self._nullables.update({nao_terminal: False})
+        
+        for terminal in self.terminais:
+            self._nullables.update({terminal: False})
 
     def _definir_nullable(self, nao_terminal: str, valor: bool):
         if nao_terminal not in self.nao_terminais:
@@ -111,3 +114,41 @@ class Gramatica:
                 self._definir_nullable(nao_terminal, resultado_nao_terminal)
 
         return self._nullables
+    
+    def _definir_firsts(self):
+        self._firsts = dict()
+
+        for nao_terminal in self.nao_terminais:
+            self._firsts.update({nao_terminal: set()})
+
+        for terminal in self.terminais:
+            self._firsts.update({terminal: set({terminal,})})
+
+    def calcular_firsts(self) -> set:
+        self._definir_firsts()
+        nullables = self.calcular_nullables()
+
+        # Caso 2: Se X é não terminal e nullable(X) = True
+        for first in self._firsts:
+            if nullables[first]:
+                self._firsts[first].add(STRING_VAZIA)
+
+        for nao_terminal, producao in self.producoes.items():
+            for derivacao in producao:
+                m = len(derivacao)
+
+                for i in range(m):
+                    simbolo = derivacao[i]
+                    resultado_derivacao = True
+
+                    if simbolo == STRING_VAZIA:
+                        continue
+
+                    for k in range(i+1):
+                        resultado_derivacao = resultado_derivacao and nullables[derivacao[k]]
+
+                    if i == 0 or resultado_derivacao:
+                        self._firsts[nao_terminal] = self._firsts[nao_terminal].union(self._firsts[simbolo])
+
+        return self._firsts
+
