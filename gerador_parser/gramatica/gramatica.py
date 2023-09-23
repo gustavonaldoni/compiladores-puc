@@ -1,4 +1,5 @@
 STRING_VAZIA = 'ε'
+STRING_EOF = '$'
 
 
 class Gramatica:
@@ -44,11 +45,11 @@ class Gramatica:
             raise KeyError(f'{nao_terminal} nao eh simbolo nao terminal.')
 
         return self.producoes.get(nao_terminal)
-    
+
     def simbolo_pertence_a_gramatica(self, simbolo: str) -> bool:
         if (simbolo not in self.terminais) and (simbolo not in self.nao_terminais) and (simbolo != STRING_VAZIA):
             return False
-        
+
         return True
 
     def _definir_nullables_como_falso(self):
@@ -79,12 +80,12 @@ class Gramatica:
             return simbolo in nullables_atuais
 
         return False
-    
+
     def _string_tem_somente_nao_terminais(self, string: str):
         for simbolo in string:
             if simbolo not in self.nao_terminais:
                 return False
-        
+
         return True
 
     def calcular_nullables(self) -> dict:
@@ -135,7 +136,7 @@ class Gramatica:
         for simbolo in string:
             if (simbolo not in self.terminais) and (simbolo not in self.nao_terminais):
                 raise KeyError(f'Simbolo {simbolo} nao definido na gramatica')
-            
+
             if simbolo in self.terminais:
                 return False
 
@@ -153,7 +154,10 @@ class Gramatica:
         for terminal in self.terminais:
             self._firsts.update({terminal: set({terminal})})
 
-    def calcular_firsts(self) -> set:
+    def _remover_terminais_dos_firsts(self):
+        self._firsts = {simbolo: resultado for simbolo, resultado in self._firsts.items() if simbolo in self.nao_terminais}
+
+    def calcular_firsts(self) -> dict:
         # Referência: http://cs434.cs.ua.edu/Classes/08_syntactic_analysis.pdf
         self._definir_firsts()
 
@@ -167,16 +171,33 @@ class Gramatica:
 
                     primeiro_simbolo = derivacao[0]
 
-                    self._firsts[nao_terminal] = self._firsts[nao_terminal].union(self._firsts[primeiro_simbolo])
+                    self._firsts[nao_terminal] = self._firsts[nao_terminal].union(
+                        self._firsts[primeiro_simbolo])
 
                     n = len(derivacao)
                     for i in range(1, n):
                         if self.nullable(derivacao[:i]):
-                            self._firsts[nao_terminal] = self._firsts[nao_terminal].union(self._firsts[derivacao[i]])
+                            self._firsts[nao_terminal] = self._firsts[nao_terminal].union(
+                                self._firsts[derivacao[i]])
 
             firsts_depois = self._firsts.copy()
 
             if firsts_antes == firsts_depois:
                 break
 
+        self._remover_terminais_dos_firsts()
+
         return self._firsts
+    
+    def definir_follows(self):
+        self._follows = dict()
+
+        for nao_terminal in self.nao_terminais:
+            self._follows.update({nao_terminal: set()})
+
+    def calcular_follows(self) -> dict:
+        # Referência: http://cs434.cs.ua.edu/Classes/08_syntactic_analysis.pdf
+        
+        self._follows[self.simbolo_inicial].add(STRING_EOF)
+
+        pass

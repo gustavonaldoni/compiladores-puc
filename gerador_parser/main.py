@@ -57,17 +57,17 @@ if __name__ == '__main__':
     print('Firsts = ', gramatica1.calcular_firsts())
 
     gramatica2.mostrar()
-    print(gramatica2.calcular_nullables())
+    print(f'Nullables = {gramatica2.calcular_nullables()}')
     print('Firsts = ', gramatica2.calcular_firsts())
 
     gramatica3.mostrar()
-    print(gramatica3.calcular_nullables())
+    print(f'Nullables = {gramatica3.calcular_nullables()}')
     print('Firsts = ', gramatica3.calcular_firsts())
 
     gramatica4.mostrar()
-    print(gramatica4.calcular_nullables())
+    print(f'Nullables = {gramatica4.calcular_nullables()}')
     print('Firsts = ', gramatica4.calcular_firsts())
 
     gramatica5.mostrar()
-    print(gramatica5.calcular_nullables())
+    print(f'Nullables = {gramatica5.calcular_nullables()}')
     print('Firsts = ', gramatica5.calcular_firsts())
