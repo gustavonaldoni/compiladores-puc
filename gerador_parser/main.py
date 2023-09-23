@@ -53,8 +53,18 @@ if __name__ == '__main__':
                            simbolo_inicial='S')
 
     gramatica1.mostrar()
-    print('Nullables = ', gramatica1.calcular_nullables())
-    print('Firsts = ', gramatica1.calcular_firsts())
+    print(f'Nullables = {gramatica1.calcular_nullables()}')
+
+    print(f'nullable(S) = {gramatica1.nullable("S")}')
+    print(f'nullable(A) = {gramatica1.nullable("A")}')
+    print(f'nullable(B) = {gramatica1.nullable("B")}')
+    print(f'nullable(C) = {gramatica1.nullable("C")}')
+
+    print(f'nullable(AC) = {gramatica1.nullable("AC")}')
+    print(f'nullable(Cc) = {gramatica1.nullable("Cc")}')
+    print(f'nullable(BCA) = {gramatica1.nullable("BCA")}')
+
+    # print('Firsts = ', gramatica1.calcular_firsts())
 
     """
     gramatica2.mostrar()

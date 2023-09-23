@@ -24,7 +24,7 @@ class Gramatica:
 
             for derivacao in producao:
                 resultado_producao += f'{derivacao} | '
-            
+
             resultado_producao = resultado_producao[:-3]
             print(resultado_producao)
 
@@ -111,7 +111,26 @@ class Gramatica:
                 self._definir_nullable(nao_terminal, resultado_nao_terminal)
 
         return self._nullables
-    
+
+    def nullable(self, string: str) -> bool:
+        resultado = True
+        nullables_nao_foram_calculados = len(self._nullables) == 0
+
+        if nullables_nao_foram_calculados:
+            self.calcular_nullables()
+
+        for simbolo in string:
+            if (simbolo not in self.terminais) and (simbolo not in self.nao_terminais):
+                raise KeyError(f'Simbolo {simbolo} nao definido na gramatica')
+            
+            if simbolo in self.terminais:
+                return False
+
+            if simbolo in self.nao_terminais:
+                resultado = resultado and self._nullables[simbolo]
+
+        return resultado
+
     def _definir_firsts(self):
         self._firsts = dict()
 
@@ -142,18 +161,19 @@ class Gramatica:
                     print()
                     print('nao_terminal = ', nao_terminal)
                     print('derivacao = ', derivacao)
-                    print(f'primeiro_simbolo = {primeiro_simbolo} : nullable = {nullables[primeiro_simbolo]}')
-                    
+                    print(
+                        f'primeiro_simbolo = {primeiro_simbolo} : nullable = {nullables[primeiro_simbolo]}')
+
                     if not nullables[primeiro_simbolo]:
-                        self._firsts[nao_terminal] = self._firsts[nao_terminal].union(self._firsts[primeiro_simbolo])
+                        self._firsts[nao_terminal] = self._firsts[nao_terminal].union(
+                            self._firsts[primeiro_simbolo])
                     else:
                         pass
 
-                    print(f'First({primeiro_simbolo}) = {self._firsts[primeiro_simbolo]}')
-                    print(f'First({nao_terminal}) = {self._firsts[nao_terminal]}')
+                    print(
+                        f'First({primeiro_simbolo}) = {self._firsts[primeiro_simbolo]}')
+                    print(
+                        f'First({nao_terminal}) = {self._firsts[nao_terminal]}')
                     print()
 
         return self._firsts
-        
-
-
