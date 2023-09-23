@@ -54,28 +54,20 @@ if __name__ == '__main__':
 
     gramatica1.mostrar()
     print(f'Nullables = {gramatica1.calcular_nullables()}')
+    print('Firsts = ', gramatica1.calcular_firsts())
 
-    print(f'nullable(S) = {gramatica1.nullable("S")}')
-    print(f'nullable(A) = {gramatica1.nullable("A")}')
-    print(f'nullable(B) = {gramatica1.nullable("B")}')
-    print(f'nullable(C) = {gramatica1.nullable("C")}')
-
-    print(f'nullable(AC) = {gramatica1.nullable("AC")}')
-    print(f'nullable(Cc) = {gramatica1.nullable("Cc")}')
-    print(f'nullable(BCA) = {gramatica1.nullable("BCA")}')
-
-    # print('Firsts = ', gramatica1.calcular_firsts())
-
-    """
     gramatica2.mostrar()
     print(gramatica2.calcular_nullables())
+    print('Firsts = ', gramatica2.calcular_firsts())
 
     gramatica3.mostrar()
     print(gramatica3.calcular_nullables())
+    print('Firsts = ', gramatica3.calcular_firsts())
 
     gramatica4.mostrar()
     print(gramatica4.calcular_nullables())
+    print('Firsts = ', gramatica4.calcular_firsts())
 
     gramatica5.mostrar()
     print(gramatica5.calcular_nullables())
-    """
+    print('Firsts = ', gramatica5.calcular_firsts())
