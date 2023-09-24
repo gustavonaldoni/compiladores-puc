@@ -1,11 +1,11 @@
 from gramatica.gramatica import Gramatica
-from gramatica.gramatica import STRING_VAZIA
+from gramatica.gramatica import SIMBOLO_VAZIO
 
 if __name__ == '__main__':
     producoes1 = {'S': ['AB', 'BCA'],
                   'A': ['BC', 'aB', 'C'],
                   'B': ['Cb'],
-                  'C': [STRING_VAZIA, 'c']}
+                  'C': [SIMBOLO_VAZIO, 'c']}
 
     gramatica1 = Gramatica(nao_terminais=set({'A', 'B', 'C', 'S'}),
                            terminais=set({'a', 'b', 'c'}),
@@ -13,7 +13,7 @@ if __name__ == '__main__':
                            simbolo_inicial='S')
 
     producoes2 = {'A': ['B', 'a'],
-                  'B': ['b', STRING_VAZIA],
+                  'B': ['b', SIMBOLO_VAZIO],
                   'C': ['c', 'ABC']}
 
     gramatica2 = Gramatica(nao_terminais=set({'A', 'B', 'C'}),
@@ -33,8 +33,8 @@ if __name__ == '__main__':
     producoes4 = {'S': ['uBDz'],
                   'B': ['Bv', 'w'],
                   'D': ['EF'],
-                  'E': ['y', STRING_VAZIA],
-                  'F': ['x', STRING_VAZIA]}
+                  'E': ['y', SIMBOLO_VAZIO],
+                  'F': ['x', SIMBOLO_VAZIO]}
 
     gramatica4 = Gramatica(nao_terminais=set({'S', 'B', 'D', 'E', 'F'}),
                            terminais=set({'u', 'v', 'w', 'x', 'y', 'z'}),
@@ -51,7 +51,18 @@ if __name__ == '__main__':
                            terminais=set({num[0], '+', '*'}),
                            producoes=producoes5,
                            simbolo_inicial='S')
+    
+    producoes6 = {'S': ['ACE'],
+                  'A': ['a', 'b', SIMBOLO_VAZIO],
+                  'C': ['c', 'd', SIMBOLO_VAZIO],
+                  'E': ['e']}
 
+    gramatica6 = Gramatica(nao_terminais=set({'S', 'A', 'C', 'E'}),
+                           terminais=set({'a', 'b', 'c', 'd', 'e'}),
+                           producoes=producoes6,
+                           simbolo_inicial='S')
+    
+    """
     gramatica1.mostrar()
     print(f'Nullables = {gramatica1.calcular_nullables()}')
     print('Firsts = ', gramatica1.calcular_firsts())
@@ -71,3 +82,13 @@ if __name__ == '__main__':
     gramatica5.mostrar()
     print(f'Nullables = {gramatica5.calcular_nullables()}')
     print('Firsts = ', gramatica5.calcular_firsts())
+    """
+    
+    gramatica6.mostrar()
+    print(f'Nullables = {gramatica1.calcular_nullables()}')
+    print('Firsts = ', gramatica6.calcular_firsts())
+    print(f'First(ACE) = {gramatica6.first("ACE")}')
+    print(f'First(A) = {gramatica6.first("A")}')
+    print(f'First(C) = {gramatica6.first("C")}')
+    print(f'First(E) = {gramatica6.first("E")}')
+    print(f'First(AEC) = {gramatica6.first("AEC")}')

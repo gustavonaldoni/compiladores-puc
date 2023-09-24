@@ -1,5 +1,5 @@
-STRING_VAZIA = 'ε'
-STRING_EOF = '$'
+SIMBOLO_VAZIO = 'ε'
+SIMBOLO_EOF = '$'
 
 
 class Gramatica:
@@ -47,8 +47,29 @@ class Gramatica:
         return self.producoes.get(nao_terminal)
 
     def simbolo_pertence_a_gramatica(self, simbolo: str) -> bool:
-        if (simbolo not in self.terminais) and (simbolo not in self.nao_terminais) and (simbolo != STRING_VAZIA):
+        if (simbolo not in self.terminais) and (simbolo not in self.nao_terminais) and (simbolo != SIMBOLO_VAZIO):
             return False
+
+        return True
+
+    def string_pertence_a_gramatica(self, string: str) -> bool:
+        for simbolo in string:
+            if not self.simbolo_pertence_a_gramatica(simbolo):
+                return False
+
+        return True
+
+    def _string_tem_somente_nao_terminais(self, string: str):
+        for simbolo in string:
+            if simbolo not in self.nao_terminais:
+                return False
+
+        return True
+
+    def _string_tem_somente_terminais(self, string: str):
+        for simbolo in string:
+            if simbolo not in self.terminais:
+                return False
 
         return True
 
@@ -81,28 +102,21 @@ class Gramatica:
 
         return False
 
-    def _string_tem_somente_nao_terminais(self, string: str):
-        for simbolo in string:
-            if simbolo not in self.nao_terminais:
-                return False
-
-        return True
-
     def calcular_nullables(self) -> dict:
         # Referência: https://mkaul.wordpress.com/2009/12/11/computing-nullable-first-and-follow-sets/
         self._definir_nullables_como_falso()
 
-        # Casos triviais onde X -> STRING_VAZIA
+        # Casos triviais onde X -> SIMBOLO_VAZIO
         nullables_triviais = []
 
         for nao_terminal in self.nao_terminais:
             producao = self.producao(nao_terminal)
 
-            if STRING_VAZIA in producao:
+            if SIMBOLO_VAZIO in producao:
                 self._definir_nullable(nao_terminal, True)
                 nullables_triviais.append(nao_terminal)
 
-        # Casos onde X -> A e A -> STRING_VAZIA
+        # Casos onde X -> A e A -> SIMBOLO_VAZIO
         for nullable_trivial in nullables_triviais:
             for nao_terminal, producao in self.producoes.items():
                 if nullable_trivial in producao:
@@ -155,7 +169,8 @@ class Gramatica:
             self._firsts.update({terminal: set({terminal})})
 
     def _remover_terminais_dos_firsts(self):
-        self._firsts = {simbolo: resultado for simbolo, resultado in self._firsts.items() if simbolo in self.nao_terminais}
+        self._firsts = {simbolo: resultado for simbolo, resultado in self._firsts.items(
+        ) if simbolo in self.nao_terminais}
 
     def calcular_firsts(self) -> dict:
         # Referência: http://cs434.cs.ua.edu/Classes/08_syntactic_analysis.pdf
@@ -166,7 +181,7 @@ class Gramatica:
 
             for nao_terminal, producao in self.producoes.items():
                 for derivacao in producao:
-                    if derivacao == STRING_VAZIA:
+                    if derivacao == SIMBOLO_VAZIO:
                         continue
 
                     primeiro_simbolo = derivacao[0]
@@ -188,7 +203,29 @@ class Gramatica:
         self._remover_terminais_dos_firsts()
 
         return self._firsts
-    
+
+    def first(self, string: str) -> set:
+        resultado = set()
+        firsts_nao_foram_calculados = len(self._firsts) == 0
+
+        if firsts_nao_foram_calculados:
+            self.calcular_firsts()
+
+        if not self.string_pertence_a_gramatica(string):
+            raise KeyError(
+                f'A string {string} tem um ou mais simbolos que nao pertencem a gramatica')
+
+        while string:
+            primeiro_simbolo = string[0]
+            resultado = resultado.union(self._firsts[primeiro_simbolo])
+
+            if not self.nullable(primeiro_simbolo):
+                return resultado
+
+            string = string[1:]
+
+        return resultado
+
     def definir_follows(self):
         self._follows = dict()
 
@@ -197,7 +234,7 @@ class Gramatica:
 
     def calcular_follows(self) -> dict:
         # Referência: http://cs434.cs.ua.edu/Classes/08_syntactic_analysis.pdf
-        
-        self._follows[self.simbolo_inicial].add(STRING_EOF)
+
+        self._follows[self.simbolo_inicial].add(SIMBOLO_EOF)
 
         pass
