@@ -52,6 +52,22 @@ class Gramatica:
 
         return True
 
+    def simbolo_e_nao_terminal(self, simbolo: str) -> bool:
+        if not self.simbolo_pertence_a_gramatica(simbolo):
+            raise ValueError(f'Simbolo {simbolo} nao pertence a gramatica')
+
+        if len(simbolo) == 0:
+            raise ValueError('String vazia nao pode ser usada como simbolo')
+
+        if len(simbolo) > 1:
+            raise ValueError(
+                'Somente simbolos, nao strings de simbolos, podem ser usados')
+
+        if simbolo in self.nao_terminais:
+            return True
+
+        return False
+
     def string_pertence_a_gramatica(self, string: str) -> bool:
         for simbolo in string:
             if not self.simbolo_pertence_a_gramatica(simbolo):
@@ -222,7 +238,7 @@ class Gramatica:
                 resultado.add(primeiro_simbolo)
 
                 return resultado
-            
+
             resultado = resultado.union(self._firsts[primeiro_simbolo])
 
             if not self.nullable(primeiro_simbolo):
@@ -254,11 +270,13 @@ class Gramatica:
 
                     for i in range(n):
                         if derivacao[i] in self.nao_terminais:
-                            self._follows[derivacao[i]] = self._follows[derivacao[i]].union(self.first(derivacao[i+1:]))
+                            self._follows[derivacao[i]] = self._follows[derivacao[i]].union(
+                                self.first(derivacao[i+1:]))
 
                     for i in range(n)[::-1]:
                         if (derivacao[i] in self.nao_terminais) and (self.nullable(derivacao[i+1:])):
-                            self._follows[derivacao[i]] = self._follows[derivacao[i]].union(self._follows[nao_terminal])
+                            self._follows[derivacao[i]] = self._follows[derivacao[i]].union(
+                                self._follows[nao_terminal])
 
             follows_depois = self._follows.copy()
 
@@ -266,3 +284,15 @@ class Gramatica:
                 break
 
         return self._follows
+
+    def follow(self, nao_terminal: str) -> set:
+        if not self.simbolo_e_nao_terminal(nao_terminal):
+            raise ValueError(
+                f'Simbolo {nao_terminal} nao pode ser usado como argumento de follow()')
+
+        follows_nao_foram_calculados = len(self._follows) == 0
+
+        if follows_nao_foram_calculados:
+            self.calcular_follows()
+
+        return self._follows[nao_terminal]
