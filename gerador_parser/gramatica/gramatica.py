@@ -232,15 +232,37 @@ class Gramatica:
 
         return resultado
 
-    def definir_follows(self):
+    def _definir_follows(self):
         self._follows = dict()
 
         for nao_terminal in self.nao_terminais:
             self._follows.update({nao_terminal: set()})
 
+        self._follows[self.simbolo_inicial].add(SIMBOLO_EOF)
+
     def calcular_follows(self) -> dict:
         # Referência: http://cs434.cs.ua.edu/Classes/08_syntactic_analysis.pdf
 
-        self._follows[self.simbolo_inicial].add(SIMBOLO_EOF)
+        self._definir_follows()
 
-        pass
+        while True:
+            follows_antes = self._follows.copy()
+
+            for nao_terminal, producao in self.producoes.items():
+                for derivacao in producao:
+                    n = len(derivacao)
+
+                    for i in range(n):
+                        if derivacao[i] in self.nao_terminais:
+                            self._follows[derivacao[i]] = self._follows[derivacao[i]].union(self.first(derivacao[i+1:]))
+
+                    for i in range(n)[::-1]:
+                        if (derivacao[i] in self.nao_terminais) and (self.nullable(derivacao[i+1:])):
+                            self._follows[derivacao[i]] = self._follows[derivacao[i]].union(self._follows[nao_terminal])
+
+            follows_depois = self._follows.copy()
+
+            if follows_antes == follows_depois:
+                break
+
+        return self._follows

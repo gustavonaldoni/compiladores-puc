@@ -62,34 +62,32 @@ if __name__ == '__main__':
                            producoes=producoes6,
                            simbolo_inicial='S')
     
-    """
     gramatica1.mostrar()
     print(f'Nullables = {gramatica1.calcular_nullables()}')
     print('Firsts = ', gramatica1.calcular_firsts())
+    print('Follows = ', gramatica1.calcular_follows())
 
     gramatica2.mostrar()
     print(f'Nullables = {gramatica2.calcular_nullables()}')
     print('Firsts = ', gramatica2.calcular_firsts())
+    print('Follows = ', gramatica2.calcular_follows())
 
     gramatica3.mostrar()
     print(f'Nullables = {gramatica3.calcular_nullables()}')
     print('Firsts = ', gramatica3.calcular_firsts())
+    print('Follows = ', gramatica3.calcular_follows())
 
     gramatica4.mostrar()
     print(f'Nullables = {gramatica4.calcular_nullables()}')
     print('Firsts = ', gramatica4.calcular_firsts())
+    print('Follows = ', gramatica4.calcular_follows())
 
     gramatica5.mostrar()
     print(f'Nullables = {gramatica5.calcular_nullables()}')
     print('Firsts = ', gramatica5.calcular_firsts())
-    """
+    print('Follows = ', gramatica5.calcular_follows())
     
     gramatica6.mostrar()
     print(f'Nullables = {gramatica1.calcular_nullables()}')
     print('Firsts = ', gramatica6.calcular_firsts())
-    print(f'First(ACE) = {gramatica6.first("ACE")}')
-    print(f'First(A) = {gramatica6.first("A")}')
-    print(f'First(C) = {gramatica6.first("C")}')
-    print(f'First(E) = {gramatica6.first("E")}')
-    print(f'First(AEC) = {gramatica6.first("AEC")}')
-    print(f'First(CaEC) = {gramatica6.first("CaEC")}')
+    print('Follows = ', gramatica6.calcular_follows())
