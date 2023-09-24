@@ -92,3 +92,4 @@ if __name__ == '__main__':
     print(f'First(C) = {gramatica6.first("C")}')
     print(f'First(E) = {gramatica6.first("E")}')
     print(f'First(AEC) = {gramatica6.first("AEC")}')
+    print(f'First(CaEC) = {gramatica6.first("CaEC")}')

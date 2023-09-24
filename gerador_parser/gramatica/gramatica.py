@@ -217,6 +217,12 @@ class Gramatica:
 
         while string:
             primeiro_simbolo = string[0]
+
+            if primeiro_simbolo in self.terminais:
+                resultado.add(primeiro_simbolo)
+
+                return resultado
+            
             resultado = resultado.union(self._firsts[primeiro_simbolo])
 
             if not self.nullable(primeiro_simbolo):
