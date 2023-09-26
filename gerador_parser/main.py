@@ -22,4 +22,4 @@ if __name__ == '__main__':
     print(f'Follows = {gramatica.calcular_follows()}')
 
     analisador.tabela_parse.mostrar()
-    analisador.analisar('i*i+i')
+    print(analisador.analisar('i*i+i*i+i*i*i+i*i*i+i'))

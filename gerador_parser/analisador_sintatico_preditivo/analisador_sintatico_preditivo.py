@@ -30,12 +30,13 @@ class AnalisadorSintaticoPreditivo:
         self._inicializar_output()
 
     def _mostrar_estado_atual(self):
-        print(f'{self.pilha.conteudo} {self.input} {self.output}')
+        print()
+        print(f'Pilha: {self.pilha.conteudo}')
+        print(f'Input: {self.input}')
+        print(f'Output: {self.output}')
 
     def analisar(self, input: str) -> bool:
         self._inicializar(input)
-
-        print(f'Pilha ------ Input ------ Output')
 
         while True:
             self._mostrar_estado_atual()
@@ -64,7 +65,6 @@ class AnalisadorSintaticoPreditivo:
 
             if len(self.pilha.conteudo) == 1:
                 self._mostrar_estado_atual()
-                print('SAIU 1')
                 break
             
             if self.input == SIMBOLO_EOF:
