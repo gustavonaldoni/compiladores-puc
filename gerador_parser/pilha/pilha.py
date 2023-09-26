@@ -16,7 +16,7 @@ class Pilha:
             raise IndexError('Nao eh possivel remover de uma pilha vazia ...')
         
         elemento = self.topo()
-        self.conteudo = self.conteudo[:-2]
+        self.conteudo = self.conteudo[:-1]
         
         return elemento
 
