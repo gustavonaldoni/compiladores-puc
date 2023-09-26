@@ -1,6 +1,8 @@
 from gramatica.gramatica import Gramatica
 from gramatica.gramatica import SIMBOLO_VAZIO
 
+from tabela_parse.tabela_parse import TabelaParse
+
 if __name__ == '__main__':
     producoes1 = {'S': ['AB', 'BCA'],
                   'A': ['BC', 'aB', 'C'],
@@ -51,16 +53,29 @@ if __name__ == '__main__':
                            terminais=set({num[0], '+', '*'}),
                            producoes=producoes5,
                            simbolo_inicial='S')
-    
-    producoes6 = {'S': ['ACE'],
-                  'A': ['a', 'b', SIMBOLO_VAZIO],
-                  'C': ['c', 'd', SIMBOLO_VAZIO],
-                  'E': ['e']}
 
-    gramatica6 = Gramatica(nao_terminais=set({'S', 'A', 'C', 'E'}),
-                           terminais=set({'a', 'b', 'c', 'd', 'e'}),
+    DS = ('1', 'DS')
+    DS_Linha = ('2', 'DS_Linha')
+
+    producoes6 = {DS[0]: [f'D{DS_Linha[0]}'],
+                  DS_Linha[0] : [f';{DS[0]}', SIMBOLO_VAZIO],
+                  'D' : 's'}
+
+    gramatica6 = Gramatica(nao_terminais=set({DS[0], DS_Linha[0], 'D'}),
+                           terminais=set({'s', ';'}),
                            producoes=producoes6,
+                           simbolo_inicial=DS[0])
+    
+    tabela_parse_6 = TabelaParse(gramatica6)
+
+    producoes7 = {'S': ['(S)S', SIMBOLO_VAZIO]}
+
+    gramatica7 = Gramatica(nao_terminais=set({'S'}),
+                           terminais=set({'(', ')'}),
+                           producoes=producoes7,
                            simbolo_inicial='S')
+    
+    tabela_parse_7 = TabelaParse(gramatica7)
     
     gramatica1.mostrar()
     print(f'Nullables = {gramatica1.calcular_nullables()}')
@@ -86,8 +101,19 @@ if __name__ == '__main__':
     print(f'Nullables = {gramatica5.calcular_nullables()}')
     print('Firsts = ', gramatica5.calcular_firsts())
     print('Follows = ', gramatica5.calcular_follows())
-    
+
     gramatica6.mostrar()
-    print(f'Nullables = {gramatica1.calcular_nullables()}')
+    print(f'Nullables = {gramatica6.calcular_nullables()}')
     print('Firsts = ', gramatica6.calcular_firsts())
     print('Follows = ', gramatica6.calcular_follows())
+
+    tabela_parse_6.construir()
+    tabela_parse_6.mostrar()
+
+    gramatica7.mostrar()
+    print(f'Nullables = {gramatica7.calcular_nullables()}')
+    print('Firsts = ', gramatica7.calcular_firsts())
+    print('Follows = ', gramatica7.calcular_follows())
+
+    tabela_parse_7.construir()
+    tabela_parse_7.mostrar()
