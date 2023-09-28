@@ -43,15 +43,15 @@ class TabelaParse:
                     follow = self.gramatica.follow(nao_terminal)
 
                     for terminal in follow:
-                        self.tabela[(nao_terminal, terminal)
-                                    ].append(SIMBOLO_VAZIO)
+                        self.tabela[(nao_terminal, terminal)].append(SIMBOLO_VAZIO)
 
                     if SIMBOLO_EOF in follow:
                         if SIMBOLO_VAZIO in self.tabela[(nao_terminal, SIMBOLO_EOF)]:
                             continue
                         else:
-                            self.tabela[(nao_terminal, SIMBOLO_EOF)
-                                        ].append(SIMBOLO_VAZIO)
+                            self.tabela[(nao_terminal, SIMBOLO_EOF)].append(
+                                SIMBOLO_VAZIO
+                            )
 
     def mostrar(self):
         tabela_ainda_nao_construida = len(self.tabela) == 0
@@ -59,5 +59,5 @@ class TabelaParse:
         if tabela_ainda_nao_construida:
             self.construir()
 
-        print('Tabela de parse = ', end='')
+        print("Tabela de parse = ", end="")
         pprint(self.tabela)

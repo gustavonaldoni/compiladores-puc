@@ -11,18 +11,18 @@ class AnalisadorSintaticoPreditivo:
         self.tabela_parse.construir()
 
         self.pilha = Pilha()
-        self.input = ''
-        self.output = ''
+        self.input = ""
+        self.output = ""
 
     def _inicializar_pilha(self):
         self.pilha.push(SIMBOLO_EOF)
         self.pilha.push(self.gramatica.simbolo_inicial)
 
     def _inicializar_input(self, input: str):
-        self.input = f'{input}{SIMBOLO_EOF}'
+        self.input = f"{input}{SIMBOLO_EOF}"
 
     def _inicializar_output(self):
-        self.output = ''
+        self.output = ""
 
     def _inicializar(self, input: str):
         self._inicializar_pilha()
@@ -31,9 +31,9 @@ class AnalisadorSintaticoPreditivo:
 
     def _mostrar_estado_atual(self):
         print()
-        print(f'Pilha: {self.pilha.conteudo}')
-        print(f'Input: {self.input}')
-        print(f'Output: {self.output}')
+        print(f"Pilha: {self.pilha.conteudo}")
+        print(f"Input: {self.input}")
+        print(f"Output: {self.output}")
 
     def analisar(self, input: str) -> bool:
         self._inicializar(input)
@@ -66,7 +66,7 @@ class AnalisadorSintaticoPreditivo:
             if len(self.pilha.conteudo) == 1:
                 self._mostrar_estado_atual()
                 break
-            
+
             if self.input == SIMBOLO_EOF:
                 continue
 

@@ -1,9 +1,11 @@
-SIMBOLO_VAZIO = 'ε'
-SIMBOLO_EOF = '$'
+SIMBOLO_VAZIO = "ε"
+SIMBOLO_EOF = "$"
 
 
 class Gramatica:
-    def __init__(self, nao_terminais: set, terminais: set, producoes: dict, simbolo_inicial: str) -> None:
+    def __init__(
+        self, nao_terminais: set, terminais: set, producoes: dict, simbolo_inicial: str
+    ) -> None:
         self.nao_terminais = nao_terminais
         self.terminais = terminais
         self.producoes = producoes
@@ -14,23 +16,23 @@ class Gramatica:
         self._follows = dict()
 
     def mostrar_nao_terminais(self):
-        print(f'N = {self.nao_terminais}')
+        print(f"N = {self.nao_terminais}")
 
     def mostrar_terminais(self):
-        print(f'T = {self.terminais}')
+        print(f"T = {self.terminais}")
 
     def mostrar_producoes(self):
         for lado_esquerdo, producao in self.producoes.items():
-            resultado_producao = f'{lado_esquerdo} -> '
+            resultado_producao = f"{lado_esquerdo} -> "
 
             for derivacao in producao:
-                resultado_producao += f'{derivacao} | '
+                resultado_producao += f"{derivacao} | "
 
             resultado_producao = resultado_producao[:-3]
             print(resultado_producao)
 
     def mostrar_simbolo_inicial(self):
-        print(f'S = {self.simbolo_inicial}')
+        print(f"S = {self.simbolo_inicial}")
 
     def mostrar(self):
         print()
@@ -42,26 +44,31 @@ class Gramatica:
 
     def producao(self, nao_terminal: str):
         if nao_terminal not in self.nao_terminais:
-            raise KeyError(f'{nao_terminal} nao eh simbolo nao terminal.')
+            raise KeyError(f"{nao_terminal} nao eh simbolo nao terminal.")
 
         return self.producoes.get(nao_terminal)
 
     def simbolo_pertence_a_gramatica(self, simbolo: str) -> bool:
-        if (simbolo not in self.terminais) and (simbolo not in self.nao_terminais) and (simbolo != SIMBOLO_VAZIO):
+        if (
+            (simbolo not in self.terminais)
+            and (simbolo not in self.nao_terminais)
+            and (simbolo != SIMBOLO_VAZIO)
+        ):
             return False
 
         return True
 
     def simbolo_e_nao_terminal(self, simbolo: str) -> bool:
         if not self.simbolo_pertence_a_gramatica(simbolo):
-            raise ValueError(f'Simbolo {simbolo} nao pertence a gramatica')
+            raise ValueError(f"Simbolo {simbolo} nao pertence a gramatica")
 
         if len(simbolo) == 0:
-            raise ValueError('String vazia nao pode ser usada como simbolo')
+            raise ValueError("String vazia nao pode ser usada como simbolo")
 
         if len(simbolo) > 1:
             raise ValueError(
-                'Somente simbolos, nao strings de simbolos, podem ser usados')
+                "Somente simbolos, nao strings de simbolos, podem ser usados"
+            )
 
         if simbolo in self.nao_terminais:
             return True
@@ -74,6 +81,14 @@ class Gramatica:
                 return False
 
         return True
+
+    def tem_recursao_a_esquerda(self) -> bool:
+        for nao_terminal, producao in self.producoes.items():
+            for derivacao in producao:
+                if nao_terminal == derivacao[0]:
+                    return True
+
+        return False
 
     def _string_tem_somente_nao_terminais(self, string: str):
         for simbolo in string:
@@ -97,16 +112,20 @@ class Gramatica:
 
     def _definir_nullable(self, nao_terminal: str, valor: bool):
         if nao_terminal not in self.nao_terminais:
-            raise KeyError(f'{nao_terminal} nao eh simbolo nao terminal.')
+            raise KeyError(f"{nao_terminal} nao eh simbolo nao terminal.")
 
         self._nullables[nao_terminal] = valor
 
     def _nullables_atuais(self) -> list[str]:
-        return [nao_terminal for nao_terminal in self._nullables.keys() if self._nullables[nao_terminal] == True]
+        return [
+            nao_terminal
+            for nao_terminal in self._nullables.keys()
+            if self._nullables[nao_terminal] == True
+        ]
 
     def _simbolo_e_nullable(self, simbolo: str) -> bool:
         if (simbolo not in self.terminais) and (simbolo not in self.nao_terminais):
-            raise KeyError(f'Simbolo {simbolo} nao definido na gramatica')
+            raise KeyError(f"Simbolo {simbolo} nao definido na gramatica")
 
         if simbolo in self.terminais:
             return False
@@ -147,10 +166,13 @@ class Gramatica:
                     resultado_derivacao = True
 
                     for simbolo in derivacao:
-                        resultado_derivacao = resultado_derivacao and self._simbolo_e_nullable(
-                            simbolo)
+                        resultado_derivacao = (
+                            resultado_derivacao and self._simbolo_e_nullable(simbolo)
+                        )
 
-                    resultado_nao_terminal = resultado_nao_terminal or resultado_derivacao
+                    resultado_nao_terminal = (
+                        resultado_nao_terminal or resultado_derivacao
+                    )
 
                 self._definir_nullable(nao_terminal, resultado_nao_terminal)
 
@@ -165,7 +187,7 @@ class Gramatica:
 
         for simbolo in string:
             if (simbolo not in self.terminais) and (simbolo not in self.nao_terminais):
-                raise KeyError(f'Simbolo {simbolo} nao definido na gramatica')
+                raise KeyError(f"Simbolo {simbolo} nao definido na gramatica")
 
             if simbolo in self.terminais:
                 return False
@@ -185,8 +207,11 @@ class Gramatica:
             self._firsts.update({terminal: set({terminal})})
 
     def _remover_terminais_dos_firsts(self):
-        self._firsts = {simbolo: resultado for simbolo, resultado in self._firsts.items(
-        ) if simbolo in self.nao_terminais}
+        self._firsts = {
+            simbolo: resultado
+            for simbolo, resultado in self._firsts.items()
+            if simbolo in self.nao_terminais
+        }
 
     def calcular_firsts(self) -> dict:
         # Referência: http://cs434.cs.ua.edu/Classes/08_syntactic_analysis.pdf
@@ -203,13 +228,15 @@ class Gramatica:
                     primeiro_simbolo = derivacao[0]
 
                     self._firsts[nao_terminal] = self._firsts[nao_terminal].union(
-                        self._firsts[primeiro_simbolo])
+                        self._firsts[primeiro_simbolo]
+                    )
 
                     n = len(derivacao)
                     for i in range(1, n):
                         if self.nullable(derivacao[:i]):
-                            self._firsts[nao_terminal] = self._firsts[nao_terminal].union(
-                                self._firsts[derivacao[i]])
+                            self._firsts[nao_terminal] = self._firsts[
+                                nao_terminal
+                            ].union(self._firsts[derivacao[i]])
 
             firsts_depois = self._firsts.copy()
 
@@ -229,7 +256,8 @@ class Gramatica:
 
         if not self.string_pertence_a_gramatica(string):
             raise KeyError(
-                f'A string {string} tem um ou mais simbolos que nao pertencem a gramatica')
+                f"A string {string} tem um ou mais simbolos que nao pertencem a gramatica"
+            )
 
         while string:
             primeiro_simbolo = string[0]
@@ -270,13 +298,17 @@ class Gramatica:
 
                     for i in range(n):
                         if derivacao[i] in self.nao_terminais:
-                            self._follows[derivacao[i]] = self._follows[derivacao[i]].union(
-                                self.first(derivacao[i+1:]))
+                            self._follows[derivacao[i]] = self._follows[
+                                derivacao[i]
+                            ].union(self.first(derivacao[i + 1 :]))
 
                     for i in range(n)[::-1]:
-                        if (derivacao[i] in self.nao_terminais) and (self.nullable(derivacao[i+1:])):
-                            self._follows[derivacao[i]] = self._follows[derivacao[i]].union(
-                                self._follows[nao_terminal])
+                        if (derivacao[i] in self.nao_terminais) and (
+                            self.nullable(derivacao[i + 1 :])
+                        ):
+                            self._follows[derivacao[i]] = self._follows[
+                                derivacao[i]
+                            ].union(self._follows[nao_terminal])
 
             follows_depois = self._follows.copy()
 
@@ -288,7 +320,8 @@ class Gramatica:
     def follow(self, nao_terminal: str) -> set:
         if not self.simbolo_e_nao_terminal(nao_terminal):
             raise ValueError(
-                f'Simbolo {nao_terminal} nao pode ser usado como argumento de follow()')
+                f"Simbolo {nao_terminal} nao pode ser usado como argumento de follow()"
+            )
 
         follows_nao_foram_calculados = len(self._follows) == 0
 
