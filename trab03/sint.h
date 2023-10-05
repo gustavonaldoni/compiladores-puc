@@ -54,7 +54,46 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
-    INTEGER = 258                  /* INTEGER  */
+    NUM = 258,                     /* NUM  */
+    ID = 259,                      /* ID  */
+    AUTO = 260,                    /* AUTO  */
+    DOUBLE = 261,                  /* DOUBLE  */
+    INT = 262,                     /* INT  */
+    STRUCT = 263,                  /* STRUCT  */
+    BREAK = 264,                   /* BREAK  */
+    ELSE = 265,                    /* ELSE  */
+    LONG = 266,                    /* LONG  */
+    SWITCH = 267,                  /* SWITCH  */
+    CASE = 268,                    /* CASE  */
+    ENUM = 269,                    /* ENUM  */
+    REGISTER = 270,                /* REGISTER  */
+    TYPEDEF = 271,                 /* TYPEDEF  */
+    CHAR = 272,                    /* CHAR  */
+    EXTERN = 273,                  /* EXTERN  */
+    RETURN = 274,                  /* RETURN  */
+    UNION = 275,                   /* UNION  */
+    CONST = 276,                   /* CONST  */
+    FLOAT = 277,                   /* FLOAT  */
+    SHORT = 278,                   /* SHORT  */
+    UNSIGNED = 279,                /* UNSIGNED  */
+    CONTINUE = 280,                /* CONTINUE  */
+    FOR = 281,                     /* FOR  */
+    SIGNED = 282,                  /* SIGNED  */
+    VOID = 283,                    /* VOID  */
+    DEFAULT = 284,                 /* DEFAULT  */
+    SIZEOF = 285,                  /* SIZEOF  */
+    VOLATILE = 286,                /* VOLATILE  */
+    DO = 287,                      /* DO  */
+    IF = 288,                      /* IF  */
+    STATIC = 289,                  /* STATIC  */
+    WHILE = 290,                   /* WHILE  */
+    GE = 291,                      /* GE  */
+    LE = 292,                      /* LE  */
+    EQ = 293,                      /* EQ  */
+    NE = 294,                      /* NE  */
+    NOT = 295,                     /* NOT  */
+    AND = 296,                     /* AND  */
+    OR = 297                       /* OR  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -63,7 +102,46 @@ extern int yydebug;
 #define YYEOF 0
 #define YYerror 256
 #define YYUNDEF 257
-#define INTEGER 258
+#define NUM 258
+#define ID 259
+#define AUTO 260
+#define DOUBLE 261
+#define INT 262
+#define STRUCT 263
+#define BREAK 264
+#define ELSE 265
+#define LONG 266
+#define SWITCH 267
+#define CASE 268
+#define ENUM 269
+#define REGISTER 270
+#define TYPEDEF 271
+#define CHAR 272
+#define EXTERN 273
+#define RETURN 274
+#define UNION 275
+#define CONST 276
+#define FLOAT 277
+#define SHORT 278
+#define UNSIGNED 279
+#define CONTINUE 280
+#define FOR 281
+#define SIGNED 282
+#define VOID 283
+#define DEFAULT 284
+#define SIZEOF 285
+#define VOLATILE 286
+#define DO 287
+#define IF 288
+#define STATIC 289
+#define WHILE 290
+#define GE 291
+#define LE 292
+#define EQ 293
+#define NE 294
+#define NOT 295
+#define AND 296
+#define OR 297
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
