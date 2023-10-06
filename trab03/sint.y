@@ -4,8 +4,8 @@ void yyerror(char *s) {
 	printf("erro sintatico na linha %d", line);
 }
 %}
-%token NUM 
-%token ID 
+%token NUM
+%token ID
 %token AUTO
 %token DOUBLE
 %token INT
@@ -48,18 +48,42 @@ void yyerror(char *s) {
 %left '*' '/'
 %start Prog
 %%
-Prog : Statement_Seq
+Prog : 
+      Statement_Seq
 	;
 	
-	
-Statement_Seq :
-	Statement Statement_Seq
+Function_Dec :
+	  Tipo ID '(' Args_Dec ')' Compound_Statement_Func
+	;
+
+Args_Dec :
+	  Args_Dec ',' Tipo ID
+	| Tipo ID
 	|
 	;
-	
+
+Compound_Statement_Func :
+      RETURN Exp ';'
+	| '{' Statement_Seq_Func '}'
+	;
+
+Statement_Seq_Func :
+	  Statement Statement_Seq_Func
+    | RETURN Exp
+	;
+
+Function_Call :
+	  ID '(' Args ')'
+	;
+
 Args:
 	  Args ',' Exp
 	| Exp
+	|
+	;
+
+Statement_Seq :
+	  Statement Statement_Seq
 	|
 	;
 		
@@ -69,11 +93,31 @@ Statement:
 	| 	While_Statement
 	|   Do_While_Statement
 	|   ID '(' Args ')' ';'
-	|   Dec_Var
+	|   Var_Dec
+	|   Function_Dec
+	|   Function_Call
 	;
 
-Dec_Var:
-	Tipo ID '=' Exp ';'
+Var_Dec:
+	  Tipo ID ';'
+	| Tipo ID '=' Exp ';'
+	| Tipo ID ',' Rest_Var_Dec ';'
+	| Tipo ID '=' Exp ',' Rest_Var_Dec ';'
+	;
+
+Rest_Var_Dec:
+	  ID Other_Var_Dec
+	| ID ',' Other_Var_Dec
+	| ID '=' Exp Other_Var_Dec
+	| ID '=' Exp ',' Other_Var_Dec
+	;
+
+Other_Var_Dec : 
+	  ID Other_Var_Dec
+	| ID ',' Other_Var_Dec 
+	| ID '=' Exp ',' Other_Var_Dec
+	| ID '=' Exp Other_Var_Dec
+	|
 	;
 
 Tipo:
@@ -122,7 +166,8 @@ Exp : Exp '+' Exp
 	| Exp OR Exp   
 	| '(' Exp ')'  
 	| NUM		   
-	| ID           
+	| ID
+	| Function_Call          
 	;   
 	
 %%  

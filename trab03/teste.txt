@@ -1,2 +1,25 @@
-a = 10 - 45464;
-int x = 45;
+int a;
+int b = 7;
+
+int x, y, k, t;
+float w = 30, z;
+
+a = 445;
+x = 3; y = 156;
+
+float addf(float a, float b) {
+    return a + b;
+}
+
+float func(float num1, float num2) {
+    return addf(a, b);
+}
+
+int func(int a, float b) {
+    char s = a;
+    s = s * 2 - 3;
+
+    return 2 * s;
+}
+
+x = func(1, 2);
