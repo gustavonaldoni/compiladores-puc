@@ -7,6 +7,21 @@ float w = 30, z;
 a = 445;
 x = 3; y = 156;
 
+int mod(int n1, int n2) {
+    int quotient = 0;
+    int max = n1, min = n2;
+    
+    if (n1 < n2) {
+        max = n2;
+        min = n1;
+    }
+
+    while (quotient * min <= max)
+        quotient = quotient + 1;
+
+    return max - (min * quotient);
+}
+
 float addf(float a, float b) {
     return a + b;
 }
@@ -19,7 +34,7 @@ int func(int a, float b) {
     char s = a;
     s = s * 2 - 3;
 
-    return 2 * s;
+    return 2 * s -  mod(a, b);
 }
 
 x = func(1, 2);

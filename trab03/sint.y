@@ -63,13 +63,12 @@ Args_Dec :
 	;
 
 Compound_Statement_Func :
-      RETURN Exp ';'
-	| '{' Statement_Seq_Func '}'
+	  '{' Statement_Seq_Func RETURN Exp ';' '}'
 	;
 
 Statement_Seq_Func :
 	  Statement Statement_Seq_Func
-    | RETURN Exp
+	|
 	;
 
 Function_Call :
