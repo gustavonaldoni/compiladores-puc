@@ -1,5 +1,6 @@
 %{ 
 #include "analex.c"
+#include "codigo.h"
 void yyerror(char *s) {
 	printf("erro sintatico na linha %d", line);
 }
@@ -57,19 +58,6 @@ Prog :
       Statement_Seq
 	;
 
-/* 
-Function_Prot :
-	  Tipo ID '(' Args_Prot ')' ';'
-	;
-
-Args_Prot : 
-	  Tipo 
-	| Tipo ID
-	| Tipo ',' Args_Prot
-	| Tipo ID ',' Args_Prot
-	;
-*/
-
 Function_Dec :
 	  Tipo ID '(' Args_Dec ')' Compound_Statement_Func
 	;
@@ -81,7 +69,7 @@ Args_Dec :
 	;
 
 Compound_Statement_Func :
-	  '{' Statement_Seq_Func RETURN Exp ';' '}'
+	  '{' Statement_Seq_Func '}'
 	;
 
 Statement_Seq_Func :
@@ -113,7 +101,9 @@ Statement:
 	| Var_Dec
 	| Function_Dec
 	| Function_Call
-	/* | Function_Prot */
+	| PRINT '(' Exp ')' ';'		{ print($3); }
+	| PRINTLN '(' Exp ')' ';'	{ println($3); }
+	| RETURN Exp ';'
 	;
 
 Var_Dec:
@@ -145,7 +135,7 @@ Tipo:
 	| VOID
 	;
 	
-Atribuicao : ID '=' Exp ';' 
+Atribuicao : ID '=' Exp ';' { atrib($$, $1, $3); }
 	;
 
 Compound_Statement :
@@ -170,20 +160,20 @@ Do_While_Statement:
 	  DO Compound_Statement WHILE '(' Exp ')' ';'   
 	;
 			
-Exp : Exp '+' Exp  
-	| Exp '-' Exp  
-	| Exp '*' Exp  
-	| Exp '/' Exp  
-	| Exp '>' Exp  
-	| Exp '<' Exp 
-	| Exp GE Exp  
-	| Exp LE Exp   
+Exp : Exp '+' Exp  	{$$ = newTemp(); expressaoAritmetica('+', $$, $1, $3);}
+	| Exp '-' Exp  	{$$ = newTemp(); expressaoAritmetica('-', $$, $1, $3);}
+	| Exp '*' Exp  	{$$ = newTemp(); expressaoAritmetica('*', $$, $1, $3);}
+	| Exp '/' Exp  	{$$ = newTemp(); expressaoAritmetica('/', $$, $1, $3);}
+	| Exp '>' Exp  	{$$ = newTemp(); expressaoRelacional('>', $$, $1, $3);}
+	| Exp '<' Exp  	{$$ = newTemp(); expressaoRelacional('<', $$, $1, $3);}
+	| Exp GE Exp   	{$$ = newTemp(); expressaoRelacional(GE, $$, $1, $3);}
+	| Exp LE Exp	{$$ = newTemp(); expressaoRelacional(LE, $$, $1, $3);}
 	| Exp EQ Exp   
 	| Exp NE Exp   
 	| Exp AND Exp  
 	| Exp OR Exp   
 	| '(' Exp ')'  
-	| NUM		   
+	| NUM			{$$ = newTemp(); li($$, $1);}   
 	| ID
 	| Function_Call          
 	;   

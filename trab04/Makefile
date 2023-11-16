@@ -16,4 +16,4 @@ all:
 	gcc $(YACC_FILE) -o $(OUTPUT_FILE)
 
 execute:
-	./$(OUTPUT_FILE) < $(TEST_FILE)
+	./$(OUTPUT_FILE) < $(TEST_FILE) > saida.asm

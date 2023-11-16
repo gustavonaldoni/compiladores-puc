@@ -87,13 +87,16 @@ extern int yydebug;
     IF = 288,                      /* IF  */
     STATIC = 289,                  /* STATIC  */
     WHILE = 290,                   /* WHILE  */
-    AND = 291,                     /* AND  */
-    OR = 292,                      /* OR  */
-    GE = 293,                      /* GE  */
-    LE = 294,                      /* LE  */
-    EQ = 295,                      /* EQ  */
-    NE = 296,                      /* NE  */
-    NOT = 297                      /* NOT  */
+    PRINT = 291,                   /* PRINT  */
+    PRINTLN = 292,                 /* PRINTLN  */
+    READ = 293,                    /* READ  */
+    AND = 294,                     /* AND  */
+    OR = 295,                      /* OR  */
+    GE = 296,                      /* GE  */
+    LE = 297,                      /* LE  */
+    EQ = 298,                      /* EQ  */
+    NE = 299,                      /* NE  */
+    NOT = 300                      /* NOT  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -135,13 +138,16 @@ extern int yydebug;
 #define IF 288
 #define STATIC 289
 #define WHILE 290
-#define AND 291
-#define OR 292
-#define GE 293
-#define LE 294
-#define EQ 295
-#define NE 296
-#define NOT 297
+#define PRINT 291
+#define PRINTLN 292
+#define READ 293
+#define AND 294
+#define OR 295
+#define GE 296
+#define LE 297
+#define EQ 298
+#define NE 299
+#define NOT 300
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED

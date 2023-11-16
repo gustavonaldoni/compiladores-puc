@@ -1,5 +1,6 @@
 %{
 #include <stdio.h>
+#include "tabsimb.h"
 #include "sint.h"
 int line=1;
 %}
@@ -58,8 +59,8 @@ int line=1;
 "{"   { return '{'; }
 "}"   { return '}'; }
 ","   { return ','; }
-[0-9]+("."[0-9]+)?   { return NUM; }
-[a-zA-Z][a-zA-Z0-9]*   { return ID; }
+[0-9]+("."[0-9]+)?   { yylval = atoi(yytext); return NUM; }
+[a-zA-Z][a-zA-Z0-9]*   { yylval = insere(yytext); return ID; }
 \        { ; }
 \n       { line++; }     
 \t       { ; }
