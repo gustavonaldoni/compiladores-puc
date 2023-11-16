@@ -5,8 +5,7 @@ int main()
     a = 10;
     b = 20;
 
-    c = a > b;
-    c = a >= 1000;
+    c = 30 + a + b;
 
     println(c);
 }

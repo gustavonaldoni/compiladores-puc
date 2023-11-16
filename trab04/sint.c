@@ -1289,7 +1289,7 @@ yyreduce:
 
   case 44: /* Atribuicao: ID '=' Exp ';'  */
 #line 138 "sint.y"
-                            { atrib(yyval, yyvsp[-3], yyvsp[-1]); }
+                            { atribuicao(yyval, yyvsp[-3], yyvsp[-1]); }
 #line 1294 "sint.c"
     break;
 
@@ -1343,7 +1343,7 @@ yyreduce:
 
   case 65: /* Exp: NUM  */
 #line 176 "sint.y"
-                                {yyval = newTemp(); li(yyval, yyvsp[0]);}
+                                {yyval = newTemp(); loadImmediate(yyval, yyvsp[0]);}
 #line 1348 "sint.c"
     break;
 

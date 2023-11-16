@@ -17,3 +17,4 @@ all:
 
 execute:
 	./$(OUTPUT_FILE) < $(TEST_FILE) > saida.asm
+	java -jar mars.jar saida.asm

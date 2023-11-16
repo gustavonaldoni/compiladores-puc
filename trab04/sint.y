@@ -135,7 +135,7 @@ Tipo:
 	| VOID
 	;
 	
-Atribuicao : ID '=' Exp ';' { atrib($$, $1, $3); }
+Atribuicao : ID '=' Exp ';' { atribuicao($$, $1, $3); }
 	;
 
 Compound_Statement :
@@ -173,7 +173,7 @@ Exp : Exp '+' Exp  	{$$ = newTemp(); expressaoAritmetica('+', $$, $1, $3);}
 	| Exp AND Exp  
 	| Exp OR Exp   
 	| '(' Exp ')'  
-	| NUM			{$$ = newTemp(); li($$, $1);}   
+	| NUM			{$$ = newTemp(); loadImmediate($$, $1);}   
 	| ID
 	| Function_Call          
 	;   

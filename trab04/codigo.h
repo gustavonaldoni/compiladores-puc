@@ -8,7 +8,14 @@ int newTemp();
 int newLabel();
 
 void getName(int, char *);
-void atrib(int, int, int);
+
+void atribuicao(int, int, int);
+void loadImmediate(int , int);
+void expressaoAritmetica(int, int, int, int);
+void expressaoRelacional(int, int, int, int);
+
+void print(int);
+void println(int);
 
 int newTemp()
 {
@@ -28,7 +35,7 @@ void getName(int num, char *name)
         sprintf(name, "$t%d", -(num + 1));
 }
 
-void atrib(int a0, int reg1, int reg2)
+void atribuicao(int a0, int reg1, int reg2)
 {
     char orig[10];
     char dest[10];
@@ -39,7 +46,7 @@ void atrib(int a0, int reg1, int reg2)
     printf("\tmove %s, %s\n", dest, orig);
 }
 
-void li(int temp, int num)
+void loadImmediate(int temp, int num)
 {
     char dest[5];
 
@@ -126,7 +133,7 @@ void print(int reg)
 
     getName(reg, nameReg);
 
-    printf("\tli v0, 7\n");
+    printf("\tli v0, 1\n");
     printf("\tmove $a0, %s\n", nameReg);
     printf("\tsyscall\n");
 }
@@ -137,7 +144,7 @@ void println(int reg)
 
     getName(reg, nameReg);
 
-    printf("\tli v0, 1\n");
+    printf("\tli $v0, 1\n");
     printf("\tmove $a0, %s\n", nameReg);
     printf("\tsyscall\n");
 }
