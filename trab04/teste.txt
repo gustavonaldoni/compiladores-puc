@@ -2,10 +2,7 @@ int main()
 {
     int a, b, c, aux;
 
-    a = 10;
-    b = 20;
-
-    c = 30 + a + b;
-
-    println(c);
+    a = 550;
+    b = 30;
+    c = 40;
 }

@@ -556,8 +556,11 @@ char *yytext;
 #include "tabsimb.h"
 #include "sint.h"
 int line=1;
-#line 560 "analex.c"
-#line 561 "analex.c"
+void yyerror(char *s) {
+	printf("erro sintatico na linha %d", line);
+}
+#line 563 "analex.c"
+#line 564 "analex.c"
 
 #define INITIAL 0
 
@@ -774,9 +777,9 @@ YY_DECL
 		}
 
 	{
-#line 7 "analex.l"
+#line 10 "analex.l"
 
-#line 780 "analex.c"
+#line 783 "analex.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -835,317 +838,317 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 8 "analex.l"
+#line 11 "analex.l"
 { return AUTO; } 
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 9 "analex.l"
+#line 12 "analex.l"
 { return DOUBLE; } 
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 10 "analex.l"
+#line 13 "analex.l"
 { return INT; } 
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 11 "analex.l"
+#line 14 "analex.l"
 { return STRUCT; } 
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 12 "analex.l"
+#line 15 "analex.l"
 { return BREAK; } 
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 13 "analex.l"
+#line 16 "analex.l"
 { return ELSE; } 
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 14 "analex.l"
+#line 17 "analex.l"
 { return LONG; } 
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 15 "analex.l"
+#line 18 "analex.l"
 { return SWITCH; } 
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 16 "analex.l"
+#line 19 "analex.l"
 { return CASE; } 
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 17 "analex.l"
+#line 20 "analex.l"
 { return ENUM; } 
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 18 "analex.l"
+#line 21 "analex.l"
 { return REGISTER; } 
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 19 "analex.l"
+#line 22 "analex.l"
 { return TYPEDEF; } 
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 20 "analex.l"
+#line 23 "analex.l"
 { return CHAR; } 
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 21 "analex.l"
+#line 24 "analex.l"
 { return EXTERN; } 
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 22 "analex.l"
+#line 25 "analex.l"
 { return RETURN; } 
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 23 "analex.l"
+#line 26 "analex.l"
 { return UNION; } 
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 24 "analex.l"
+#line 27 "analex.l"
 { return CONST; } 
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 25 "analex.l"
+#line 28 "analex.l"
 { return FLOAT; } 
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 26 "analex.l"
+#line 29 "analex.l"
 { return SHORT; } 
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 27 "analex.l"
+#line 30 "analex.l"
 { return UNSIGNED; } 
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 28 "analex.l"
+#line 31 "analex.l"
 { return CONTINUE; } 
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 29 "analex.l"
+#line 32 "analex.l"
 { return FOR; } 
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 30 "analex.l"
+#line 33 "analex.l"
 { return SIGNED; } 
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 31 "analex.l"
+#line 34 "analex.l"
 { return VOID; } 
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 32 "analex.l"
+#line 35 "analex.l"
 { return DEFAULT; } 
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 33 "analex.l"
+#line 36 "analex.l"
 { return SIZEOF; } 
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 34 "analex.l"
+#line 37 "analex.l"
 { return VOLATILE; } 
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 35 "analex.l"
+#line 38 "analex.l"
 { return DO; } 
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 36 "analex.l"
+#line 39 "analex.l"
 { return IF; } 
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 37 "analex.l"
+#line 40 "analex.l"
 { return STATIC; } 
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 38 "analex.l"
+#line 41 "analex.l"
 { return WHILE; }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 39 "analex.l"
+#line 42 "analex.l"
 { return PRINT; }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 40 "analex.l"
+#line 43 "analex.l"
 { return PRINTLN; }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 41 "analex.l"
+#line 44 "analex.l"
 { return READ; }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 42 "analex.l"
+#line 45 "analex.l"
 { return AND; }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 43 "analex.l"
+#line 46 "analex.l"
 { return OR; }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 44 "analex.l"
+#line 47 "analex.l"
 { return GE; } 
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 45 "analex.l"
+#line 48 "analex.l"
 { return LE; } 
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 46 "analex.l"
+#line 49 "analex.l"
 { return EQ; } 
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 47 "analex.l"
+#line 50 "analex.l"
 { return NE; }
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 48 "analex.l"
+#line 51 "analex.l"
 { return NOT; }
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 49 "analex.l"
+#line 52 "analex.l"
 { return '>';}
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 50 "analex.l"
+#line 53 "analex.l"
 { return '<';}
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 51 "analex.l"
+#line 54 "analex.l"
 { return '='; }
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 52 "analex.l"
+#line 55 "analex.l"
 { return '+'; }
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 53 "analex.l"
+#line 56 "analex.l"
 { return '-'; }
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 54 "analex.l"
+#line 57 "analex.l"
 { return '*'; }
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 55 "analex.l"
+#line 58 "analex.l"
 { return '/'; }
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 56 "analex.l"
+#line 59 "analex.l"
 { return ';'; }
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 57 "analex.l"
+#line 60 "analex.l"
 { return '('; }
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 58 "analex.l"
+#line 61 "analex.l"
 { return ')'; }
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 59 "analex.l"
+#line 62 "analex.l"
 { return '{'; }
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 60 "analex.l"
+#line 63 "analex.l"
 { return '}'; }
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 61 "analex.l"
+#line 64 "analex.l"
 { return ','; }
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 62 "analex.l"
-{ yylval = atoi(yytext); return NUM; }
+#line 65 "analex.l"
+{ yylval.place = atoi(yytext); return NUM; }
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 63 "analex.l"
-{ yylval = insere(yytext); return ID; }
+#line 66 "analex.l"
+{ yylval.place = insere(yytext); return ID; }
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 64 "analex.l"
+#line 67 "analex.l"
 { ; }
 	YY_BREAK
 case 58:
 /* rule 58 can match eol */
 YY_RULE_SETUP
-#line 65 "analex.l"
+#line 68 "analex.l"
 { line++; }     
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 66 "analex.l"
+#line 69 "analex.l"
 { ; }
 	YY_BREAK
 case 60:
 /* rule 60 can match eol */
 YY_RULE_SETUP
-#line 67 "analex.l"
+#line 70 "analex.l"
 { }             
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 68 "analex.l"
+#line 71 "analex.l"
 { yyerror("illegal token"); }
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 69 "analex.l"
+#line 72 "analex.l"
 ECHO;
 	YY_BREAK
-#line 1149 "analex.c"
+#line 1152 "analex.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2150,7 +2153,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 69 "analex.l"
+#line 72 "analex.l"
 
 #ifndef yywrap
 int yywrap() { return 1; }

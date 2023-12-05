@@ -13,8 +13,8 @@ TEST_FILE = teste.txt
 all:
 	flex -o $(ANALEX_FILE) $(LEX_FILE)
 	yacc $(SINT_FILE) -o $(YACC_FILE) -d
-	gcc $(YACC_FILE) -o $(OUTPUT_FILE)
+	gcc $(YACC_FILE) -o $(OUTPUT_FILE) -lfl
 
 execute:
-	./$(OUTPUT_FILE) < $(TEST_FILE) > saida.asm
+	./$(OUTPUT_FILE) $(TEST_FILE)
 	java -jar mars.jar saida.asm

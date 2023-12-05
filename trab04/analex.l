@@ -3,6 +3,9 @@
 #include "tabsimb.h"
 #include "sint.h"
 int line=1;
+void yyerror(char *s) {
+	printf("erro sintatico na linha %d", line);
+}
 %}
 %%
 "auto" { return AUTO; } 
@@ -59,8 +62,8 @@ int line=1;
 "{"   { return '{'; }
 "}"   { return '}'; }
 ","   { return ','; }
-[0-9]+("."[0-9]+)?   { yylval = atoi(yytext); return NUM; }
-[a-zA-Z][a-zA-Z0-9]*   { yylval = insere(yytext); return ID; }
+[0-9]+("."[0-9]+)?   { yylval.place = atoi(yytext); return NUM; }
+[a-zA-Z][a-zA-Z0-9]*   { yylval.place = insere(yytext); return ID; }
 \        { ; }
 \n       { line++; }     
 \t       { ; }

@@ -1,5 +1,8 @@
 #include <stdio.h>
+#include "lista.h"
 #include "sint.h"
+
+char instrucao[30];
 
 int temp = -1;
 int label = 0;
@@ -9,10 +12,12 @@ int newLabel();
 
 void getName(int, char *);
 
-void atribuicao(int, int, int);
-void loadImmediate(int , int);
+void atribuicao(struct no *, int, struct no);
+void loadImmediate(struct no*, int);
 void expressaoAritmetica(int, int, int, int);
 void expressaoRelacional(int, int, int, int);
+
+void readInt();
 
 void print(int);
 void println(int);
@@ -35,23 +40,31 @@ void getName(int num, char *name)
         sprintf(name, "$t%d", -(num + 1));
 }
 
-void atribuicao(int a0, int reg1, int reg2)
+void atribuicao(struct no *Atrib, int $1, struct no $3)
 {
     char orig[10];
     char dest[10];
 
-    getName(reg2, orig);
-    getName(reg1, dest);
+    getName($3.place, orig);
+    getName($1, dest);
 
-    printf("\tmove %s, %s\n", dest, orig);
+    sprintf(instrucao, "\tmove %s, %s\n", dest, orig);
+    
+    createCode(&Atrib->code);
+	insertCode(&Atrib->code,$3.code);
+	insertCode(&Atrib->code,instrucao);
 }
 
-void loadImmediate(int temp, int num)
+void loadImmediate(struct no* Exp, int num)
 {
     char dest[5];
+    
+    createCode(&Exp->code);
 
     getName(temp, dest);
-    printf("\tli %s, %d\n", dest, num);
+    sprintf(instrucao, "\tli %s, %d\n", dest, num);
+    
+    insertCode(&Exp->code, instrucao);
 }
 
 void expressaoAritmetica(int op, int temp, int reg1, int reg2)
@@ -149,7 +162,14 @@ void println(int reg)
     printf("\tsyscall\n");
 }
 
-void readint(int reg)
+void readInt(int reg)
 {
-
+	char nameReg[5];
+	
+	printf("\tli $v0, 5\n");
+    printf("\tsyscall\n");
+    
+    getName(reg, nameReg);
+    
+    printf("\tmove %s, $v0\n", nameReg);
 }

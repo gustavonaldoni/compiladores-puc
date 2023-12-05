@@ -1,12 +1,16 @@
+%union {
+  struct no {
+    int place;
+	char *code;
+  } node;
+  int place;
+}
 %{ 
 #include "analex.c"
 #include "codigo.h"
-void yyerror(char *s) {
-	printf("erro sintatico na linha %d", line);
-}
 %}
-%token NUM
-%token ID
+%token <place> NUM
+%token <place> ID
 %token AUTO
 %token DOUBLE
 %token INT
@@ -48,10 +52,14 @@ void yyerror(char *s) {
 %token EQ
 %token NE
 %token NOT
+
 %left AND OR
 %left '>' '<' NE EQ GE LE
 %left '+' '-'
 %left '*' '/'
+
+%type <node> Exp Atribuicao
+
 %start Prog
 %%
 Prog : 
@@ -101,8 +109,9 @@ Statement:
 	| Var_Dec
 	| Function_Dec
 	| Function_Call
-	| PRINT '(' Exp ')' ';'		{ print($3); }
-	| PRINTLN '(' Exp ')' ';'	{ println($3); }
+	| PRINT '(' Exp ')' ';'		{}
+	| PRINTLN '(' Exp ')' ';'	{}
+	| READ '(' ID ')' ';' {}
 	| RETURN Exp ';'
 	;
 
@@ -135,7 +144,7 @@ Tipo:
 	| VOID
 	;
 	
-Atribuicao : ID '=' Exp ';' { atribuicao($$, $1, $3); }
+Atribuicao : ID '=' Exp ';' { atribuicao(&$$, $1, $3); printf("%s", $$.code); }
 	;
 
 Compound_Statement :
@@ -160,26 +169,29 @@ Do_While_Statement:
 	  DO Compound_Statement WHILE '(' Exp ')' ';'   
 	;
 			
-Exp : Exp '+' Exp  	{$$ = newTemp(); expressaoAritmetica('+', $$, $1, $3);}
-	| Exp '-' Exp  	{$$ = newTemp(); expressaoAritmetica('-', $$, $1, $3);}
-	| Exp '*' Exp  	{$$ = newTemp(); expressaoAritmetica('*', $$, $1, $3);}
-	| Exp '/' Exp  	{$$ = newTemp(); expressaoAritmetica('/', $$, $1, $3);}
-	| Exp '>' Exp  	{$$ = newTemp(); expressaoRelacional('>', $$, $1, $3);}
-	| Exp '<' Exp  	{$$ = newTemp(); expressaoRelacional('<', $$, $1, $3);}
-	| Exp GE Exp   	{$$ = newTemp(); expressaoRelacional(GE, $$, $1, $3);}
-	| Exp LE Exp	{$$ = newTemp(); expressaoRelacional(LE, $$, $1, $3);}
+Exp : Exp '+' Exp
+	| Exp '-' Exp  	
+	| Exp '*' Exp  	
+	| Exp '/' Exp  	
+	| Exp '>' Exp  	
+	| Exp '<' Exp  	
+	| Exp GE Exp   	
+	| Exp LE Exp	
 	| Exp EQ Exp   
 	| Exp NE Exp   
 	| Exp AND Exp  
 	| Exp OR Exp   
 	| '(' Exp ')'  
-	| NUM			{$$ = newTemp(); loadImmediate($$, $1);}   
+	| NUM			{ $$.place = newTemp(); loadImmediate(&$$,$1); }   
 	| ID
 	| Function_Call          
 	;   
 	
 %%  
-int main(int argc, char **argv) {     
+int main(int argc, char **argv) {   
+  freopen("saida.asm","w",stdout);	
+  printf(".text\n");
   yyin = fopen(argv[1],"r");
-  yyparse();      
-} 
+  yyparse();
+    
+}
