@@ -1,54 +1,28 @@
 %{
 #include <stdio.h>
-#include "tabsimb.h"
-#include "sint.h"
+#include "tabsimb.h" 
+#include "mycomp.h"
 int line=1;
-void yyerror(char *s) {
-	printf("erro sintatico na linha %d", line);
+int yyerror(char *s) { 
+  fprintf(stderr, "%s na linha %d\n",s,line); 
 }
 %}
 %%
-"auto" { return AUTO; } 
-"double" { return DOUBLE; } 
-"int" { return INT; } 
-"struct" { return STRUCT; } 
-"break" { return BREAK; } 
-"else" { return ELSE; } 
-"long" { return LONG; } 
-"switch" { return SWITCH; } 
-"case" { return CASE; } 
-"enum" { return ENUM; } 
-"register" { return REGISTER; } 
-"typedef" { return TYPEDEF; } 
-"char" { return CHAR; } 
-"extern" { return EXTERN; } 
-"return" { return RETURN; } 
-"union" { return UNION; } 
-"const" { return CONST; } 
-"float" { return FLOAT; } 
-"short" { return SHORT; } 
-"unsigned" { return UNSIGNED; } 
-"continue" { return CONTINUE; } 
-"for" { return FOR; } 
-"signed" { return SIGNED; } 
-"void" { return VOID; } 
-"default" { return DEFAULT; } 
-"sizeof" { return SIZEOF; } 
-"volatile" { return VOLATILE; } 
-"do" { return DO; } 
-"if" { return IF; } 
-"static" { return STATIC; } 
-"while" { return WHILE; }
-"print" { return PRINT; }
-"println" { return PRINTLN; }
-"read" { return READ; }
-"&&" { return AND; }
-"||" { return OR; }
-">=" { return GE; } 
-"<=" { return LE; } 
-"==" { return EQ; } 
-"!=" { return NE; }
-"!" { return NOT; }
+"if"  { return IF; }
+"else" { return ELSE;}
+"while" { return WHILE;}
+"do"  { return DO;}
+"int" { return INT;}
+"char" {return CHAR;}
+"void" {return VOID;}
+"read" {return READ;}
+"print" {return PRINT;}
+"println" {return PRINTLN;}
+">="  { return GE;}
+"<="  { return LE;}
+"=="  { return EQ;}
+"!="  { return NE;}
+"!"   { return NOT;}
 ">"   { return '>';}
 "<"   { return '<';}
 "="   { return '='; }
@@ -73,3 +47,6 @@ void yyerror(char *s) {
 #ifndef yywrap
 int yywrap() { return 1; }
 #endif
+
+
+

@@ -1,175 +1,226 @@
-#include <stdio.h>
-#include "lista.h"
-#include "sint.h"
-
-char instrucao[30];
+#include "mycomp.h"
+#include "listacodigo.h"
 
 int temp = -1;
-int label = 0;
-
-int newTemp();
-int newLabel();
-
-void getName(int, char *);
-
-void atribuicao(struct no *, int, struct no);
-void loadImmediate(struct no*, int);
-void expressaoAritmetica(int, int, int, int);
-void expressaoRelacional(int, int, int, int);
-
-void readInt();
-
-void print(int);
-void println(int);
-
 int newTemp()
 {
-    return temp--;
+	return temp--;
 }
 
+int label = -1;
 int newLabel()
 {
-    return label++;
+	return ++label;
 }
 
+char reg1[5];
+char reg2[5];
+char reg_temp[5];
 void getName(int num, char *name)
 {
-    if (num >= 0)
-        sprintf(name, "$s%d", num);
-    else
-        sprintf(name, "$t%d", -(num + 1));
+	if (num >= 0)
+	{
+		sprintf(name, "$s%d", num);
+	}
+	else
+		sprintf(name, "$t%d", -(num + 1));
 }
 
-void atribuicao(struct no *Atrib, int $1, struct no $3)
+void Atrib(struct no *Atrib, int $1, struct no $3)
 {
-    char orig[10];
-    char dest[10];
-
-    getName($3.place, orig);
-    getName($1, dest);
-
-    sprintf(instrucao, "\tmove %s, %s\n", dest, orig);
-    
-    createCode(&Atrib->code);
-	insertCode(&Atrib->code,$3.code);
-	insertCode(&Atrib->code,instrucao);
+	char name_dest[5];
+	char name_orig[5];
+	getName($3.place, name_orig);
+	getName($1, name_dest);
+	sprintf(instrucao, "\tmove %s,%s\n", name_dest, name_orig);
+	create_cod(&Atrib->code);
+	insert_cod(&Atrib->code, $3.code);
+	insert_cod(&Atrib->code, instrucao);
 }
 
-void loadImmediate(struct no* Exp, int num)
+void Li(struct no *Exp, int num)
 {
-    char dest[5];
-    
-    createCode(&Exp->code);
-
-    getName(temp, dest);
-    sprintf(instrucao, "\tli %s, %d\n", dest, num);
-    
-    insertCode(&Exp->code, instrucao);
+	char name_dest[5];
+	create_cod(&Exp->code);
+	getName(Exp->place, name_dest);
+	sprintf(instrucao, "\tli %s,%d\n", name_dest, num);
+	insert_cod(&Exp->code, instrucao);
 }
 
-void expressaoAritmetica(int op, int temp, int reg1, int reg2)
+void ExpAri(char *operacao, struct no *Exp, struct no Exp1, struct no Exp2)
 {
-    char nameReg1[5];
-    char nameReg2[5];
-    char nameTemp[5];
+	char name_reg1[5];
+	char name_reg2[5];
+	char name_temp[5];
+	Exp->place = newTemp();
 
-    getName(reg1, nameReg1);
-    getName(reg2, nameReg2);
-    getName(temp, nameTemp);
-
-    switch (op)
-    {
-    case '+':
-        printf("\tadd %s, %s, %s\n", nameTemp, nameReg1, nameReg2);
-        break;
-
-    case '-':
-        printf("\tsub %s, %s, %s\n", nameTemp, nameReg1, nameReg2);
-        break;
-
-    case '*':
-        printf("\tmul %s, %s, %s\n", nameTemp, nameReg1, nameReg2);
-        break;
-
-    case '/':
-        printf("\tdiv %s, %s, %s\n", nameTemp, nameReg1, nameReg2);
-        break;
-
-    default:
-        break;
-    }
+	create_cod(&Exp->code);
+	insert_cod(&Exp->code, Exp1.code);
+	insert_cod(&Exp->code, Exp2.code);
+	getName(Exp1.place, name_reg1);
+	getName(Exp2.place, name_reg2);
+	getName(Exp->place, name_temp);
+	sprintf(instrucao, "\t%s %s,%s,%s\n", operacao, name_temp,
+			name_reg1, name_reg2);
+	insert_cod(&Exp->code, instrucao);
 }
 
-void expressaoRelacional(int op, int temp, int reg1, int reg2)
+void ExpRel(char *branch, struct no *Exp, struct no Exp1, struct no Exp2)
 {
-    char nameReg1[5];
-    char nameReg2[5];
-    char nameTemp[5];
+	char name_reg1[5];
+	char name_reg2[5];
+	char name_temp[5];
+	Exp->place = newTemp();
+	getName(Exp->place, name_temp);
+	create_cod(&Exp->code);
+	insert_cod(&Exp->code, Exp1.code);
+	insert_cod(&Exp->code, Exp2.code);
 
-    getName(reg1, nameReg1);
-    getName(reg2, nameReg2);
-    getName(temp, nameTemp);
-
-    newLabel();
-
-    printf("\tli %s, 1\n", nameTemp);
-
-    switch (op)
-    {
-    case '>':
-        printf("\tbgt %s, %s, L%d\n", nameReg1, nameReg2, label);
-        break;
-
-    case '<':
-        printf("\tblt %s, %s, L%d\n", nameReg1, nameReg2, label);
-        break;
-
-    case GE:
-        printf("\tbge %s, %s, L%d\n", nameReg1, nameReg2, label);
-        break;
-
-    case LE:
-        printf("\tble %s, %s, L%d\n", nameReg1, nameReg2, label);
-        break;
-
-    default:
-        break;
-    }
-
-    printf("\tli %s, 0\n", nameTemp);
-    printf("L%d:", label);
+	getName(Exp1.place, name_reg1);
+	getName(Exp2.place, name_reg2);
+	getName(Exp->place, name_temp);
+	sprintf(instrucao, "\tli %s,1\n", name_temp);
+	insert_cod(&Exp->code, instrucao);
+	newLabel();
+	sprintf(instrucao, "\t%s %s,%s,L%d\n", branch, name_reg1, name_reg2, label);
+	insert_cod(&Exp->code, instrucao);
+	sprintf(instrucao, "\tli %s,0\n", name_temp);
+	insert_cod(&Exp->code, instrucao);
+	sprintf(instrucao, "L%d:", label);
+	insert_cod(&Exp->code, instrucao);
 }
 
-void print(int reg)
+void Print(struct no *Print, struct no Exp)
 {
-    char nameReg[5];
+	char name_reg[10];
+	create_cod(&Print->code);
+	getName(Exp.place, name_reg);
 
-    getName(reg, nameReg);
+	sprintf(instrucao, "\tli $v0, 1\n");
+	insert_cod(&Print->code, instrucao);
 
-    printf("\tli v0, 1\n");
-    printf("\tmove $a0, %s\n", nameReg);
-    printf("\tsyscall\n");
+	sprintf(instrucao, "\tmove $a0,%s\n", name_reg);
+	insert_cod(&Print->code, instrucao);
+
+	sprintf(instrucao, "\tsyscall\n");
+	insert_cod(&Print->code, instrucao);
 }
 
-void println(int reg)
+void Println(struct no *Print, struct no Exp)
 {
-    char nameReg[5];
+	char name_reg[10];
+	create_cod(&Print->code);
+	getName(Exp.place, name_reg);
 
-    getName(reg, nameReg);
+	sprintf(instrucao, "\tli $v0, 1\n");
+	insert_cod(&Print->code, instrucao);
 
-    printf("\tli $v0, 1\n");
-    printf("\tmove $a0, %s\n", nameReg);
-    printf("\tsyscall\n");
+	sprintf(instrucao, "\tmove $a0,%s\n", name_reg);
+	insert_cod(&Print->code, instrucao);
+
+	sprintf(instrucao, "\tsyscall\n");
+	insert_cod(&Print->code, instrucao);
+
+	sprintf(instrucao, "\tli $v0,11\n");
+	insert_cod(&Print->code, instrucao);
+
+	sprintf(instrucao, "\tli $a0,'\\n'\n");
+	insert_cod(&Print->code, instrucao);
+
+	sprintf(instrucao, "\tsyscall\n");
+	insert_cod(&Print->code, instrucao);
 }
 
-void readInt(int reg)
+void Read(struct no *Read_cmd, int reg)
 {
-	char nameReg[5];
+	char name_reg[10];
+	create_cod(&Read_cmd->code);
+	sprintf(instrucao, "\tli $v0, 5\n");
+	insert_cod(&Read_cmd->code, instrucao);
+
+	getName(reg, name_reg);
+	sprintf(instrucao, "\tsyscall\n");
+	insert_cod(&Read_cmd->code, instrucao);
+
+	sprintf(instrucao, "\tmove %s,$v0\n", name_reg);
+	insert_cod(&Read_cmd->code, instrucao);
+}
+
+void If(struct no *If_cmd, struct no Exp, struct no Compound)
+{
+	char reg_temp[10];
+
+	create_cod(&If_cmd->code);
+	insert_cod(&If_cmd->code, Exp.code);
+
+	getName(Exp.place, reg_temp);
+	newLabel();
+
+	sprintf(instrucao, "\tbeq %s,0,L%d\n", reg_temp, label);
+	insert_cod(&If_cmd->code, instrucao);
+
+	insert_cod(&If_cmd->code, Compound.code);
+
+	sprintf(instrucao, "L%d:", label);
+	insert_cod(&If_cmd->code, instrucao);
+}
+
+void IfElse(struct no *If_cmd, struct no Exp, struct no Compound1, struct no Compound2)
+{
+	char reg_temp[10];
+	int aux_label;
+
+	create_cod(&If_cmd->code);
+	insert_cod(&If_cmd->code, Exp.code);
+
+	getName(Exp.place, reg_temp);
+	newLabel();
+
+	sprintf(instrucao, "\tbeq %s,0,L%d\n", reg_temp, label);
+	insert_cod(&If_cmd->code, instrucao);
+
+	insert_cod(&If_cmd->code, Compound1.code);
+
+	aux_label = label;
+	newLabel();
+	sprintf(instrucao, "\tj L%d\n", label);
+	insert_cod(&If_cmd->code, instrucao);
+
+	sprintf(instrucao, "L%d:", aux_label);
+	insert_cod(&If_cmd->code, instrucao);
+
+	insert_cod(&If_cmd->code, Compound2.code);
+
+	sprintf(instrucao, "L%d:", label);
+	insert_cod(&If_cmd->code, instrucao);
+}
+
+void While(struct no *While_cmd, struct no Exp, struct no Compound)
+{
+	char reg_temp[10];
+
+	int auxLabel1, auxLabel2;
 	
-	printf("\tli $v0, 5\n");
-    printf("\tsyscall\n");
-    
-    getName(reg, nameReg);
-    
-    printf("\tmove %s, $v0\n", nameReg);
+	auxLabel1 = newLabel();
+	auxLabel2 = newLabel();
+
+	create_cod(&While_cmd->code);
+
+	sprintf(instrucao, "L%d:\n", auxLabel1);
+	insert_cod(&While_cmd->code, instrucao);
+
+	insert_cod(&While_cmd->code, Exp.code);
+
+	getName(Exp.place, reg_temp);
+
+	sprintf(instrucao, "\tbeq %s,0,L%d\n", reg_temp, auxLabel2);
+	insert_cod(&While_cmd->code, instrucao);
+
+	insert_cod(&While_cmd->code, Compound.code);
+
+	sprintf(instrucao, "\tj L%d\n", auxLabel1);
+	insert_cod(&While_cmd->code, instrucao);
+
+	sprintf(instrucao, "L%d:\n", auxLabel2);
+	insert_cod(&While_cmd->code, instrucao);
 }

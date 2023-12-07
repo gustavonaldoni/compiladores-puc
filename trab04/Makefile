@@ -1,5 +1,5 @@
 ANALEX = analex
-SINT = sint
+SINT = mycomp
 
 LEX_FILE = $(ANALEX).l
 ANALEX_FILE = $(ANALEX).c
@@ -8,7 +8,7 @@ SINT_FILE = $(SINT).y
 YACC_FILE = $(SINT).c
 
 OUTPUT_FILE = $(SINT).out
-TEST_FILE = teste.txt
+TEST_FILE = teste.c
 
 all:
 	flex -o $(ANALEX_FILE) $(LEX_FILE)
